@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+
+<body>
+
+    <div id="table">
+        <div id="dealer-score" class="score">Dealer score: <span>0</span></div>
+        <div id="deck">
+            <div class="back"></div>
+        </div>
+        <div class="container" id="dealer">
+        </div>
+
+        <div class="border-line"></div>
+
+        <div id="player-score" class="score">Player 1 score : <span>0</span></div>
+        <div id="player2-score" class="score">Player 2 score : <span>0</span></div>
+        <div class="text">Player 1 : </div>
+        <div class="container" id="player">
+        </div>
+        <div class="text">Player 2 : </div>
+        <div class="container" id="player2">
+        </div>
+    </div>
+
+    <div id="panel">
+        <div id="status">Press start to start game</div>
+
+        <button id="start" class="blue" type="button">START</button>
+        <button id="hit" class="green" type="button" disabled>HIT</button>
+        <button id="stand" class="red" type="button" disabled>STAND</button>
+        <button id="replay" class="purple" type="button" disabled>REPLAY</button>
+
+    </div>
+
+    <script type="text/javascript" src="../scripts/GameMulti.js"></script>
+    <script type="text/javascript" src="../scripts/Deck.js"></script>
+    <script type="text/javascript" src="../scripts/Card.js"></script>
+    <script type="text/javascript" src="../scripts/Player.js"></script>
+
+    <script type="text/javascript">
+        //initialise the game
+        Game.init();
+    </script>
+</body>
+
+</html>
