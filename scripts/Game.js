@@ -4,7 +4,6 @@ var Game = (function () {
     */
     this.smallButtonHandler = function () {
         this.numberCard = 32;
-        this.startButton.disabled = false;
     }
 
     /*
@@ -12,7 +11,6 @@ var Game = (function () {
     */
     this.hugeButtonHandler = function () {
         this.numberCard = 52;   
-        this.startButton.disabled = false;
         console.log(this.numberCard);
     }
 
@@ -43,6 +41,7 @@ var Game = (function () {
 
         //if over, then player looses
         if (this.player.getScore() > 21) {
+            this.playerMoney.innerHTML = this.playerMoney.textContent - this.playerStake.value;
             this.gameEnded('You lost!');
         }
     }
@@ -69,6 +68,7 @@ var Game = (function () {
             
             //Rule set
             if (dealerBlackjack && !playerBlackjack) {
+                this.playerMoney.innerHTML = this.playerMoney.textContent - this.playerStake.value;
                 this.gameEnded('You lost!');
                 break;
             } else if (dealerBlackjack && playerBlackjack) {
@@ -84,12 +84,26 @@ var Game = (function () {
         }
         
     }
+
+    
     /*
         Initialise
     */
     this.init = function () {
         this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
         this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
+        this.playerMoney = document.getElementById('player-money').getElementsByTagName("span")[0];
+        this.playerStake = document.getElementById('stake');
+        playerStake.oninput = function() {
+            if(parseInt(this.value) < parseInt(document.getElementById('player-money').getElementsByTagName("span")[0].textContent)) {
+                this.stake = this.value;
+                document.getElementById('start').disabled = false;
+            }
+            else {
+                console.log("Cannot have value superior");
+                document.getElementById('start').disabled = true;
+            }
+        };
         this.playerProbability = document.getElementById('player-probability').getElementsByTagName("span")[0];
         this.smallButton = document.getElementById('small');
         this.hugeButton = document.getElementById('huge');
@@ -98,16 +112,13 @@ var Game = (function () {
         this.standButton = document.getElementById('stand');
         this.replayButton = document.getElementById('replay');
 
-
-        //attaching event handlers
-        
+        //attaching event handlers        
         this.smallButton.addEventListener('click', this.smallButtonHandler.bind(this));
         this.hugeButton.addEventListener('click', this.hugeButtonHandler.bind(this));
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
         this.replayButton.addEventListener('click', this.startButtonHandler.bind(this));
-
     }
 
     function bernoulli(p) {
