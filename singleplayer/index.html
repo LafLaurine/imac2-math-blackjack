@@ -21,6 +21,7 @@
         <div class="border-line"></div>
 
         <div id="player-score" class="score">Your score: <span>0</span></div>
+        <div id="player-probability" class="probability">Probability to win : <span>0</span></div>
         <div class="container" id="player">
         </div>
     </div>
@@ -32,17 +33,17 @@
         <button id="huge" class="orange" type="button">52</button>
         <div id="status">Press start to start game</div>
 
-        <button id="start" class="blue" type="button">START</button>
+        <button id="start" class="blue" type="button" disabled>START</button>
         <button id="hit" class="green" type="button" disabled>HIT</button>
         <button id="stand" class="red" type="button" disabled>STAND</button>
         <button id="replay" class="purple" type="button" disabled>REPLAY</button>
-
     </div>
 
     <script type="text/javascript" src="../scripts/Game.js"></script>
     <script type="text/javascript" src="../scripts/Deck.js"></script>
     <script type="text/javascript" src="../scripts/Card.js"></script>
     <script type="text/javascript" src="../scripts/Player.js"></script>
+    <script type="text/javascript" src="../scripts/Probability.js"></script>
 
     <script type="text/javascript">
         //initialise the game

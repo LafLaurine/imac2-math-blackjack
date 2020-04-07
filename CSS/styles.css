@@ -125,7 +125,7 @@ body {
     margin: 20px 0;
 }
 
-.score {
+.score, .probability {
     position: relative;
     text-align: center;
     font-family: Gill Sans;

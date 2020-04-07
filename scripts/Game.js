@@ -4,6 +4,7 @@ var Game = (function () {
     */
     this.smallButtonHandler = function () {
         this.numberCard = 32;
+        this.startButton.disabled = false;
         console.log(this.numberCard);
     }
 
@@ -12,6 +13,7 @@ var Game = (function () {
     */
     this.hugeButtonHandler = function () {
         this.numberCard = 52;   
+        this.startButton.disabled = false;
         console.log(this.numberCard);
     }
 
@@ -90,6 +92,7 @@ var Game = (function () {
     this.init = function () {
         this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
         this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
+        this.playerProbability = document.getElementById('player-probability').getElementsByTagName("span")[0];
         this.smallButton = document.getElementById('small');
         this.hugeButton = document.getElementById('huge');
         this.startButton = document.getElementById('start');
@@ -147,12 +150,17 @@ var Game = (function () {
         //initilaise and shuffle the deck of cards
         bernoulliApplication(Math.random());
         Deck.shuffle();
-		console.log(Deck.deck.length);
         //deal one card to dealer
         this.dealer = new Player('dealer', [Deck.deck.pop()]);
-
         //deal two cards to player
         this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
+
+        if(Deck.deck.length = 52) {
+            this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(52,2)).toFixed(5);
+        }
+        else if(Deck.deck.length = 32) {
+            this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(32,2)).toFixed(5);
+        }
 
         //render the cards
         document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
@@ -161,7 +169,7 @@ var Game = (function () {
         //renders the current scores
         this.dealerScore.innerHTML = this.dealer.getScore();
         this.playerScore.innerHTML = this.player.getScore();
-
+        
         this.setMessage("Hit or Stand");
     }
 
