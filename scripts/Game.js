@@ -5,7 +5,6 @@ var Game = (function () {
     this.smallButtonHandler = function () {
         this.numberCard = 32;
         this.startButton.disabled = false;
-        console.log(this.numberCard);
     }
 
     /*
@@ -124,7 +123,7 @@ var Game = (function () {
         
     function bernoulliApplication(p){
         if (bernoulli(p) == true){
-            if(this.numberCard == 32) {
+            if(this.numberCard = 32) {
                 Deck.initSmall();
             }
             else {
@@ -132,7 +131,7 @@ var Game = (function () {
             }
         }
         else {
-            if(this.numberCard == 32) {
+            if(this.numberCard = 32) {
                 Deck.initInequallySmall();
             }
             else {            
@@ -155,10 +154,12 @@ var Game = (function () {
         //deal two cards to player
         this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
 
-        if(Deck.deck.length = 52) {
+        if(this.numberCard == 52) {
+            console.log("put");
             this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(52,2)).toFixed(5);
         }
-        else if(Deck.deck.length = 32) {
+        else if (this.numberCard == 32) {
+            console.log("oui");
             this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(32,2)).toFixed(5);
         }
 

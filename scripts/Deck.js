@@ -12,8 +12,8 @@ var Deck = new function () {
 
 	this.init = function () {
 		this.deck = []; //empty the array
-		for (var suits = 3; suits >= 0; suits--) {
-			for (var ranks = 12; ranks >= 0; ranks--) {
+		for (let suits = 3; suits >= 0; suits--) {
+			for (let ranks = 12; ranks >= 0; ranks--) {
 				this.deck.push(new Card(this.ranks[ranks], this.suits[suits]));
 			}
 		}
@@ -21,8 +21,8 @@ var Deck = new function () {
 	
 	this.initSmall = function () {
 		this.deck = []; //empty the array
-		for (var suits = 3; suits >= 0; suits--) {
-			for (var ranks = 7; ranks >= 0; ranks--) {
+		for (let suits = 3; suits >= 0; suits--) {
+			for (let ranks = 7; ranks >= 0; ranks--) {
 				this.deck.push(new Card(this.ranks[ranks], this.suits[suits]));
 			}
 		}
@@ -30,8 +30,8 @@ var Deck = new function () {
 
 	this.initInequally = function () {
 		this.deck = []; //empty the array
-		for (var suits = 3; suits >= 0; suits--) {
-			for (var ranks = 12; ranks >= 0; ranks--) {
+		for (let suits = 3; suits >= 0; suits--) {
+			for (let ranks = 12; ranks >= 0; ranks--) {
 				this.deck.push(new Card(this.inequalRanks[ranks], this.suits[suits]));
 			}
 		}
@@ -39,8 +39,8 @@ var Deck = new function () {
 
 	this.initInequallySmall = function() {
 		this.deck = []; //empty the array
-		for (var suits = 3; suits >= 0; suits--) {
-			for (var ranks = 7; ranks >= 0; ranks--) {
+		for (let suits = 3; suits >= 0; suits--) {
+			for (let ranks = 7; ranks >= 0; ranks--) {
 				this.deck.push(new Card(this.inequalRanks[ranks], this.suits[suits]));
 			}
 		}	
@@ -50,7 +50,7 @@ var Deck = new function () {
 	    Shuffles the cards in the deck randomly
 	*/
 	this.shuffle = function () {
-		/*var j, x, i;
+		/*let j, x, i;
 		for (i = this.deck.length; i; i--) {
 			j = Math.floor(Math.random() * i);
 			x = this.deck[i - 1];
@@ -60,10 +60,10 @@ var Deck = new function () {
 
 		// for 1000 turns
 		// switch the values of two random cards
-		for (var i = 0; i < 1000; i++) {
-			var location1 = Math.floor((Math.random() * this.deck.length));
-			var location2 = Math.floor((Math.random() * this.deck.length));
-			var tmp = this.deck[location1];
+		for (let i = 0; i < 1000; i++) {
+			let location1 = Math.floor((Math.random() * this.deck.length));
+			let location2 = Math.floor((Math.random() * this.deck.length));
+			let tmp = this.deck[location1];
 
 			this.deck[location1] = this.deck[location2];
 			this.deck[location2] = tmp;
