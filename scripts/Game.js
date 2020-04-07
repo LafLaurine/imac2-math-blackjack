@@ -87,15 +87,36 @@ var Game = (function () {
 
     }
 
+    function bernoulli(p) {
+        var t = Math.random();
+        if (t < p){
+            // success
+            return true;
+        }
+        // failure
+        return false;
+    }
+        
+    function bernoulliApplication(p){
+        if (bernoulli(p) == true){
+            Deck.init();
+        }
+        else {
+            Deck.initInequally();
+            console.log("OUI");
+        }
+    }
+
+
     /*
         Start the game
     */
     this.start = function () {
 
         //initilaise and shuffle the deck of cards
-        Deck.init();
+        bernoulliApplication(Math.random());
         Deck.shuffle();
-
+		console.log(Deck.deck.length);
         //deal one card to dealer
         this.dealer = new Player('dealer', [Deck.deck.pop()]);
 
