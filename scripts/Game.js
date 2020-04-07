@@ -57,7 +57,7 @@ var Game = (function () {
 
         //deals a card to the dealer until
         //one of the conditions below is true
-        while (true) {
+        while (this.dealer.getScore() <= 17) {
             var card = Deck.deck.pop();
 
             this.dealer.hit(card);
@@ -65,8 +65,8 @@ var Game = (function () {
             this.dealerScore.innerHTML = this.dealer.getScore();
 
             var playerBlackjack = this.player.getScore() == 21,
-                dealerBlackjack = this.dealer.getScore() == 21;
-
+                dealerBlackjack = this.dealer.getScore() == 21; 
+            
             //Rule set
             if (dealerBlackjack && !playerBlackjack) {
                 this.gameEnded('You lost!');
@@ -74,16 +74,15 @@ var Game = (function () {
             } else if (dealerBlackjack && playerBlackjack) {
                 this.gameEnded('Draw!');
                 break;
+            } else if (!dealerBlackjack && playerBlackjack) {
+                this.gameEnded('You won!');
+                break;
             } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
                 this.gameEnded('You won!');
                 break;
-            } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
-                this.gameEnded('You lost!');
-                break;
-            }
-            //TODO needs to be expanded..
-
+            } 
         }
+        
     }
     /*
         Initialise
@@ -155,11 +154,9 @@ var Game = (function () {
         this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
 
         if(this.numberCard == 52) {
-            console.log("put");
             this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(52,2)).toFixed(5);
         }
         else if (this.numberCard == 32) {
-            console.log("oui");
             this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(32,2)).toFixed(5);
         }
 
