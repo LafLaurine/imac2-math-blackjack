@@ -1,10 +1,27 @@
 var Game = (function () {
+    /*
+        32 cards button event handler
+    */
+    this.smallButtonHandler = function () {
+        this.numberCard = 32;
+        console.log(this.numberCard);
+    }
 
     /*
-        Deal button event handler
+        52 cards button event handler
+    */
+    this.hugeButtonHandler = function () {
+        this.numberCard = 52;   
+        console.log(this.numberCard);
+    }
+
+    /*
+        Start button event handler
     */
     this.startButtonHandler = function () {
         this.start();
+        this.smallButton.disabled = true;
+        this.hugeButton.disabled = true;
         this.startButton.disabled = true;
         this.hitButton.disabled = false;
         this.standButton.disabled = false;
@@ -73,6 +90,8 @@ var Game = (function () {
     this.init = function () {
         this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
         this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
+        this.smallButton = document.getElementById('small');
+        this.hugeButton = document.getElementById('huge');
         this.startButton = document.getElementById('start');
         this.hitButton = document.getElementById('hit');
         this.standButton = document.getElementById('stand');
@@ -80,6 +99,9 @@ var Game = (function () {
 
 
         //attaching event handlers
+        
+        this.smallButton.addEventListener('click', this.smallButtonHandler.bind(this));
+        this.hugeButton.addEventListener('click', this.hugeButtonHandler.bind(this));
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
@@ -99,11 +121,20 @@ var Game = (function () {
         
     function bernoulliApplication(p){
         if (bernoulli(p) == true){
-            Deck.init();
+            if(this.numberCard == 32) {
+                Deck.initSmall();
+            }
+            else {
+                Deck.init();
+            }
         }
         else {
-            Deck.initInequally();
-            console.log("OUI");
+            if(this.numberCard == 32) {
+                Deck.initInequallySmall();
+            }
+            else {            
+                Deck.initInequally();
+            }
         }
     }
 
