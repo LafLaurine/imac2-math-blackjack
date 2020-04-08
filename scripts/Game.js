@@ -75,12 +75,17 @@ var Game = (function () {
                 this.gameEnded('Draw!');
                 break;
             } else if (!dealerBlackjack && playerBlackjack) {
+                this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 3;
                 this.gameEnded('You won!');
                 break;
-            } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
+            } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {7
+                this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 2;
                 this.gameEnded('You won!');
                 break;
-            } 
+            } else if (this.playerMoney.textContent == 0) {
+                this.gameEnded('You loose!');
+                break;
+            }
         }
         
     }
@@ -123,6 +128,8 @@ var Game = (function () {
 
     function bernoulli(p) {
         var t = Math.random();
+        var esperance = p;
+        var variance = p*(1-p);
         if (t < p){
             // success
             return true;
@@ -156,6 +163,14 @@ var Game = (function () {
     */
     this.start = function () {
 
+        var counter = 0;
+        var intervalId = null;
+        function bip() {
+            counter++;
+            document.getElementById("timeBip").innerHTML = "Time : " + counter + " seconds";
+        }
+        intervalId = setInterval(bip, 1000);
+        
         //initilaise and shuffle the deck of cards
         bernoulliApplication(Math.random());
         Deck.shuffle();
@@ -186,6 +201,7 @@ var Game = (function () {
         If the player wins or looses
     */
     this.gameEnded = function (str) {
+        document.getElementById("timeBip").innerHTML = 0;
         this.setMessage(str);
         this.startButton.disabled = false;
         this.hitButton.disabled = true;

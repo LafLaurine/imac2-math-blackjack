@@ -27,3 +27,7 @@ function combination(n, k) {
     }
     return t[k]; //return value
 }
+
+function hypergeometric(k, n, g, t){
+    return combination(g,k)*combination((t-g),(n-k))/combination(t,n);
+}
