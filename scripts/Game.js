@@ -10,8 +10,7 @@ var Game = (function () {
         52 cards button event handler
     */
     this.hugeButtonHandler = function () {
-        this.numberCard = 52;   
-        console.log(this.numberCard);
+        this.numberCard = 52;
     }
 
     /*
@@ -38,6 +37,11 @@ var Game = (function () {
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
+        numberCardHand = this.player.hand.length;
+        this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(this.numberCard,numberCardHand)).toFixed(5);
+        if(player.hand.length == 10) {
+
+        }
 
         //if over, then player looses
         if (this.player.getScore() > 21) {
@@ -100,7 +104,7 @@ var Game = (function () {
         this.playerMoney = document.getElementById('player-money').getElementsByTagName("span")[0];
         this.playerStake = document.getElementById('stake');
         playerStake.oninput = function() {
-            if(parseInt(this.value) < parseInt(document.getElementById('player-money').getElementsByTagName("span")[0].textContent)) {
+            if(parseInt(this.value) <= parseInt(document.getElementById('player-money').getElementsByTagName("span")[0].textContent)) {
                 this.stake = this.value;
                 document.getElementById('start').disabled = false;
             }
@@ -140,10 +144,10 @@ var Game = (function () {
         
     function bernoulliApplication(p){
         if (bernoulli(p) == true){
-            if(this.numberCard = 32) {
+            if(this.numberCard == 32) {
                 Deck.initSmall();
             }
-            else {
+            else if(this.numberCard == 52) {
                 Deck.init();
             }
         }
@@ -151,7 +155,7 @@ var Game = (function () {
             if(this.numberCard = 32) {
                 Deck.initInequallySmall();
             }
-            else {            
+            else if(this.numberCard == 52) {            
                 Deck.initInequally();
             }
         }
@@ -179,12 +183,9 @@ var Game = (function () {
         //deal two cards to player
         this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
 
-        if(this.numberCard == 52) {
-            this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(52,2)).toFixed(5);
-        }
-        else if (this.numberCard == 32) {
-            this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(32,2)).toFixed(5);
-        }
+        var numberCardHand = this.player.hand.length;
+
+        this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination(this.numberCard,2)).toFixed(5);
 
         //render the cards
         document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
