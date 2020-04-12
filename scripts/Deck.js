@@ -3,8 +3,8 @@ var Deck = new function () {
 	this.suits = ['hearts', 'spades', 'diamonds', 'clubs'];
 	this.deck;
 	this.ranksSmall = ['A', '7', '8', '9', '10', 'J', 'Q', 'K'];
-
 	this.inequalRanks = ['A', 'A', 'A', 'K', '5', '2', '7', '8', '9', '10', 'J', 'Q', 'K'];
+	this.inequalSmallRanks = ['A', 'A', 'A', 'K', '10', 'J', 'Q', 'K'];
 
 	/*
 	    Fills up the deck array with cards
@@ -22,8 +22,8 @@ var Deck = new function () {
 	this.initSmall = function () {
 		this.deck = []; //empty the array
 		for (let suits = 3; suits >= 0; suits--) {
-			for (let ranks = 7; ranks >= 0; ranks--) {
-				this.deck.push(new Card(this.ranks[ranks], this.suits[suits]));
+			for (let ranksSmall = 7; ranksSmall >= 0; ranksSmall--) {
+				this.deck.push(new Card(this.ranksSmall[ranksSmall], this.suits[suits]));
 			}
 		}
 	}
@@ -40,8 +40,8 @@ var Deck = new function () {
 	this.initInequallySmall = function() {
 		this.deck = []; //empty the array
 		for (let suits = 3; suits >= 0; suits--) {
-			for (let ranks = 7; ranks >= 0; ranks--) {
-				this.deck.push(new Card(this.inequalRanks[ranks], this.suits[suits]));
+			for (let inequalSmallRanks = 7; inequalSmallRanks >= 0; inequalSmallRanks--) {
+				this.deck.push(new Card(this.inequalSmallRanks[inequalSmallRanks], this.suits[suits]));
 			}
 		}	
 	}
