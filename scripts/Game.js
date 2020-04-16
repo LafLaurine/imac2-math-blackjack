@@ -37,14 +37,17 @@ var Game = (function () {
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
-        if(this.inequal == false) {
+        if(this.inequal === false) {
+            document.getElementById('obtainingCard').oninput = function() {
+                document.getElementById('chosen-card').innerHTML = obtainingCard(this.value)
+            }
             this.playerProbability.innerHTML = ((combination(4,1) * combination(16,1)) /  combination((this.numberCard)-this.numberCardHand,this.numberCardHand)).toFixed(5);
             //proba blackjack = just to have an AS
             if(player.hand.length == 10) {
                 this.playerProbability.innerHTML = ((combination(4,1)) /  combination((this.numberCard)-this.numberCardHand,this.numberCardHand)).toFixed(5);
             }
         }
-        else if (this.inequal == true){
+        else if (this.inequal === true){
             this.playerProbability.innerHTML = ((combination(12,1) * combination(20,1)) /  combination((this.numberCard)-this.numberCardHand,this.numberCardHand)).toFixed(5);
             //proba blackjack = just to have an AS
             if(player.hand.length == 10) {

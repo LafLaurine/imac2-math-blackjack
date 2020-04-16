@@ -9,7 +9,19 @@
 </head>
 
 <body>
-
+    <div class="sidebar">
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+            <li class="element"><div id="card-probability" class="probability"> Probability of obtaining chosen card :  <input type="text" id="obtainingCard" class="probability"></input> </div></li>
+            <li class="element"><div id="chosen-card" class="probability">0</div></li>
+            <li class="element">
+                <div id="goodHand-probability" class="probability">Probability to have a good hand : <span>0</span> %</div>
+                <div id="player-probability" class="probability">Probability to have Blackjack : <span>0</span></div>
+            </li>
+          </ul>
+        </div>
+    </div>
+    
     <div id="table">
         <div id="dealer-score" class="score">Dealer score: <span>0</span></div>
         <div id="deck">
@@ -19,13 +31,10 @@
         </div>
 
         <div class="border-line"></div>
-        <div id="card-probability" class="probability"> Probability of obtaining chosen card :  <input type="text" id="obtainingCard" class="probability"></input> </div>
-        <div id="chosen-card" class="probability">0</div>
+        
         <div id="player-money" class="score">Your money: <span>500</span></div>
         <div id="player-money" class="score">Your stake: <input id="stake"></input></div>
         <div id="player-score" class="score">Your score: <span>0</span></div>
-        <div id="goodHand-probability" class="probability">Probability to have a good hand : <span>0</span> %</div>
-        <div id="player-probability" class="probability">Probability to have Blackjack : <span>0</span></div>
         <div class="container" id="player">
         </div>
     </div>
