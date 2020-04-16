@@ -190,14 +190,9 @@ var Game = (function () {
         Start the game
     */
     this.start = function () {
-
+        console.log(poisson(10,20))
         let counter = 0;
         let inequal = false;
-        function bip() {
-            counter++;
-            document.getElementById("timeBip").innerHTML = "Time : " + counter + " seconds";
-        }
-        intervalId = setInterval(bip, 1000);
         
         //initilaise and shuffle the deck of cards
         bernoulliApplication(Math.random());
@@ -216,11 +211,11 @@ var Game = (function () {
         }
 
         //good hand probability compute
-        const hand20Probability = ((combination(4,1) * combination(4,1) + combination(16,2)) /  combination(this.numberCard,2)).toFixed(5);
-        const hand19Probability = ((combination(4,1) * combination(4,1) + combination(16,1) * combination(4,1)) /  combination(this.numberCard,2)).toFixed(5);
-        const hand18Probability = ((combination(4,1) * combination(4,1) +  combination(16,1) * combination(4,1) + combination(4,2)) /  combination(this.numberCard,2)).toFixed(5);
+        const hand20Probability = ((combination(4,1) * combination(4,1) + combination(16,2)) /  combination(this.numberCard,2)).toFixed(2);
+        const hand19Probability = ((combination(4,1) * combination(4,1) + combination(16,1) * combination(4,1)) /  combination(this.numberCard,2)).toFixed(2);
+        const hand18Probability = ((combination(4,1) * combination(4,1) +  combination(16,1) * combination(4,1) + combination(4,2)) /  combination(this.numberCard,2)).toFixed(2);
         const goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
-        this.goodHandProbability.innerHTML = goodHandProba;
+        this.goodHandProbability.innerHTML = goodHandProba.toFixed(2);
 
         //render the cards
         document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
@@ -237,7 +232,6 @@ var Game = (function () {
         If the player wins or looses
     */
     this.gameEnded = function (str) {
-        document.getElementById("timeBip").innerHTML = 0;
         this.setMessage(str);
         this.startButton.disabled = false;
         this.hitButton.disabled = true;

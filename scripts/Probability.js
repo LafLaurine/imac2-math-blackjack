@@ -31,3 +31,15 @@ function combination(n, k) {
 function hypergeometric(k, n, g, t){
     return combination(g,k)*combination((t-g),(n-k))/combination(t,n);
 }
+
+//Poisson
+//cas limite de la loi binomiale pour lequel intervient le facteur temps 
+// loi de probabilité discrète qui décrit le comportement du nombre d'événements se produisant dans un intervalle de temps fixé
+// si ces événements se produisent avec une fréquence moyenne ou espérance connue, et indépendamment du temps écoulé depuis l'événement précédent
+//lambda fois l'événement en moyenne par delta T
+//quelle est la proba de l'evt exactement k fois dans ce delta T ?
+function poisson(k, lambda){
+    let A = Math.pow(lambda,k);
+    let L = Math.exp(-lambda);
+    return ((A * L) / factorial(k))
+}
