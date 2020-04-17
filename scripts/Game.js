@@ -40,16 +40,20 @@ var Game = (function () {
             document.getElementById('obtainingCard').oninput = function () {
                 document.getElementById('chosen-card').innerHTML = obtainingCard(this.value)
             }
-            this.playerProbability.innerHTML = ((combination(4, 1) * combination(16, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(5);
+            this.playerProbability.innerHTML = ((combination(4, 1) * combination(16, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
+            this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             //proba blackjack = just to have an AS
             if (player.hand.length == 10) {
-                this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(5);
+                this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
+                this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             }
         } else if (this.inequal === true) {
-            this.playerProbability.innerHTML = ((combination(12, 1) * combination(20, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(5);
+            this.playerProbability.innerHTML = ((combination(12, 1) * combination(20, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
+            this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             //proba blackjack = just to have an AS
             if (player.hand.length == 10) {
-                this.playerProbability.innerHTML = ((combination(12, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(5);
+                this.playerProbability.innerHTML = ((combination(12, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
+                this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             }
         }
 
@@ -133,6 +137,7 @@ var Game = (function () {
             }
         };
         this.playerProbability = document.getElementById('player-probability').getElementsByTagName("span")[0];
+        this.expectedValue = document.getElementById('expected-value').getElementsByTagName("span")[0];
         this.goodHandProbability = document.getElementById('goodHand-probability').getElementsByTagName("span")[0];
         this.smallButton = document.getElementById('small');
         this.hugeButton = document.getElementById('huge');
@@ -223,11 +228,14 @@ var Game = (function () {
 
         this.numberCardHand = this.player.hand.length;
         this.numberCardDealer = this.dealer.hand.length;
-        const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(5);
+        const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
+        const hand21Inequal = ((combination(12, 1) * combination(20, 1)) / combination(this.numberCard, 2)).toFixed(2)
         if (inequal === false) {
             this.playerProbability.innerHTML = hand21Probability;
+            this.expectedValue.innerHTML = ((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value))
         } else if (inequal === true) {
-            this.playerProbability.innerHTML = ((combination(12, 1) * combination(20, 1)) / combination(this.numberCard, 2)).toFixed(5);
+            this.playerProbability.innerHTML = hand21Inequal;
+            this.expectedValue.innerHTML = ((1 - hand21Inequal) * this.playerStake.value) - (hand21Inequal * (3 * this.playerStake.value))
         }
 
         //good hand probability compute
