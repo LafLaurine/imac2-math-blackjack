@@ -23,7 +23,6 @@ var Game = (function () {
         this.startButton.disabled = true;
         this.hitButton.disabled = false;
         this.standButton.disabled = false;
-        this.replayButton.disabled = false;
     }
 
     /*
@@ -68,7 +67,6 @@ var Game = (function () {
     this.standButtonHandler = function () {
         this.hitButton.disabled = true;
         this.standButton.disabled = true;
-        this.replayButton.disabled = true;
 
         //deals a card to the dealer until
         //one of the conditions below is true
@@ -99,9 +97,12 @@ var Game = (function () {
                 this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 3;
                 this.gameEnded('You won!');
                 break;
-            } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {7
+            } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
                 this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 2;
                 this.gameEnded('You won!');
+                break;
+            } else if(this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
+                this.gameEnded('You lost!');
                 break;
             } else if (this.playerMoney.textContent == 0) {
                 this.gameEnded('You loose!');
@@ -142,15 +143,12 @@ var Game = (function () {
         this.startButton = document.getElementById('start');
         this.hitButton = document.getElementById('hit');
         this.standButton = document.getElementById('stand');
-        this.replayButton = document.getElementById('replay');
-
         //attaching event handlers        
         this.smallButton.addEventListener('click', this.smallButtonHandler.bind(this));
         this.hugeButton.addEventListener('click', this.hugeButtonHandler.bind(this));
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
-        this.replayButton.addEventListener('click', this.startButtonHandler.bind(this));
     }
 
     function bernoulli(p) {
@@ -271,7 +269,6 @@ var Game = (function () {
         this.startButton.disabled = false;
         this.hitButton.disabled = true;
         this.standButton.disabled = true;
-        this.replayButton.disabled = true;
     }
 
     /*
