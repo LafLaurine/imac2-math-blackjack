@@ -26,6 +26,9 @@
                     </div>
                     <div id="bust-probability" class="probability">Probability to bust : <span>0</span></div>
                     <div id="expected-value" class="probability">Expected value : <span>0</span></div>
+                    <button id="showGraphButton" class="red" type="button">Show graph card
+                        distribution</button>
+                    <canvas id="myChart"></canvas>
 
                 </li>
             </ul>
@@ -45,6 +48,7 @@
         <div id="player-money" class="score">Your money: <span>500</span></div>
         <div id="player-money" class="score">Your stake: <input id="stake"></input></div>
         <div id="player-score" class="score">Your score: <span>0</span></div>
+
         <div class="container" id="player">
         </div>
     </div>
@@ -60,12 +64,13 @@
         <button id="hit" class="green" type="button" disabled>HIT</button>
         <button id="stand" class="red" type="button" disabled>STAND</button>
     </div>
-
     <script type="text/javascript" src="../scripts/Game.js"></script>
     <script type="text/javascript" src="../scripts/Deck.js"></script>
     <script type="text/javascript" src="../scripts/Card.js"></script>
     <script type="text/javascript" src="../scripts/Player.js"></script>
     <script type="text/javascript" src="../scripts/Probability.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 
     <script type="text/javascript">
         //initialise the game
