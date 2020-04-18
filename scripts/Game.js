@@ -159,6 +159,7 @@ var Game = (function () {
             }
         };
         this.playerProbability = document.getElementById('player-probability').getElementsByTagName("span")[0];
+        this.bustProbability = document.getElementById('bust-probability').getElementsByTagName("span")[0];
         this.expectedValue = document.getElementById('expected-value').getElementsByTagName("span")[0];
         this.goodHandProbability = document.getElementById('goodHand-probability').getElementsByTagName("span")[0];
         this.smallButton = document.getElementById('small');
@@ -240,6 +241,24 @@ var Game = (function () {
     }
 
 
+    this.computeBust = function () {
+        let nbUnknownCard = this.numberCard - this.numberCardHand
+        let count = 0
+        //limit is a card the player must draw in order to not bust
+        let limit = 21 - this.player.getScore()
+        let cards = []
+        for (let i = 0; i < this.player.hand.length; i++) {
+            cards.push(this.player.hand[i].rank)
+        }
+        for (let i = 0; i < Deck.deck.length; i++) {
+            if (Deck.deck[i].getValue() >= limit) {
+                count++;
+            }
+        }
+        return count / nbUnknownCard;
+    }
+
+
     /*
         Start the game
     */
@@ -286,7 +305,7 @@ var Game = (function () {
         cardProbability.oninput = function () {
             document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
         }
-
+        this.bustProbability.innerHTML = this.computeBust()
         this.setMessage("Hit or Stand");
     }
 
