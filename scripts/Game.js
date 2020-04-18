@@ -1,4 +1,4 @@
-var Game = (function () {
+let Game = (function () {
     /*
         32 cards button event handler
     */
@@ -30,7 +30,7 @@ var Game = (function () {
     */
     this.hitButtonHandler = function () {
         //deal a card and add to player's hand
-        var card = Deck.deck.pop();
+        let card = Deck.deck.pop();
         this.player.hit(card);
 
         //render the card and score
@@ -74,17 +74,23 @@ var Game = (function () {
         //deals a card to the dealer until
         //one of the conditions below is true
         while (true) {
-            var card = Deck.deck.pop();
-
-            if (this.dealer.getScore() <= 16) {
+            let card = Deck.deck.pop();
+            if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
+                let t = Math.random();
+                if (t > 4) {
+                    this.dealer.hit(card);
+                } else {
+                    this.dealer.stand();
+                }
+            } else if (this.dealer.getScore() < 17) {
                 this.dealer.hit(card);
             } else {
-                this.dealer.stand();
+                this.dealer.stand()
             }
             document.getElementById(this.dealer.element).innerHTML += card.view();
             this.dealerScore.innerHTML = this.dealer.getScore();
 
-            var playerBlackjack = this.player.getScore() == 21,
+            let playerBlackjack = this.player.getScore() == 21,
                 dealerBlackjack = this.dealer.getScore() == 21;
 
             //Rule set
@@ -115,7 +121,7 @@ var Game = (function () {
     }
 
     this.showGraph = function () {
-        var ctx = document.getElementById('myChart').getContext('2d');
+        let ctx = document.getElementById('myChart').getContext('2d');
         new Chart(ctx, {
             // The type of chart we want to create
             type: 'bar',
@@ -178,19 +184,6 @@ var Game = (function () {
 
         this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
 
-    }
-
-
-    function bernoulli(p) {
-        var t = Math.random();
-        var esperance = p;
-        var variance = p * (1 - p);
-        if (t < p) {
-            // success
-            return true;
-        }
-        // failure
-        return false;
     }
 
     function bernoulliApplication(p) {

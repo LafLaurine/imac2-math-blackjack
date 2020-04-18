@@ -1,4 +1,4 @@
-var Deck = new function () {
+let Deck = new function () {
 	this.ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	this.suits = ['hearts', 'spades', 'diamonds', 'clubs'];
 	this.deck;
@@ -18,7 +18,7 @@ var Deck = new function () {
 			}
 		}
 	}
-	
+
 	this.initSmall = function () {
 		this.deck = []; //empty the array
 		for (let suits = 3; suits >= 0; suits--) {
@@ -37,13 +37,13 @@ var Deck = new function () {
 		}
 	}
 
-	this.initInequallySmall = function() {
+	this.initInequallySmall = function () {
 		this.deck = []; //empty the array
 		for (let suits = 3; suits >= 0; suits--) {
 			for (let inequalSmallRanks = 7; inequalSmallRanks >= 0; inequalSmallRanks--) {
 				this.deck.push(new Card(this.inequalSmallRanks[inequalSmallRanks], this.suits[suits]));
 			}
-		}	
+		}
 	}
 
 	/*
