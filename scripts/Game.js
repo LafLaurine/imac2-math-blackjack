@@ -23,6 +23,7 @@ let Game = (function () {
         this.startButton.disabled = true;
         this.hitButton.disabled = false;
         this.standButton.disabled = false;
+        this.replayButton.disabled = false;
     }
 
     /*
@@ -36,7 +37,7 @@ let Game = (function () {
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
-        this.bustProbability.innerHTML = this.computeBust()
+        this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
         if (this.inequal === false) {
             document.getElementById('obtainingCard').oninput = function () {
                 document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
@@ -74,23 +75,48 @@ let Game = (function () {
     this.standButtonHandler = function () {
         this.hitButton.disabled = true;
         this.standButton.disabled = true;
+        this.replayButton.disabled = true;
 
         //deals a card to the dealer until
         //one of the conditions below is true
         while (true) {
             let card = Deck.deck.pop();
-            if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
-                let t = Math.random();
-                if (t > 4) {
+            if (localStorage.getItem('difficulty') === 'easy') {
+
+                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
+                    let t = Math.random();
+                    if (t > 7) {
+                        this.dealer.hit(card);
+                    }
+                } else if (this.dealer.getScore() < 17) {
                     this.dealer.hit(card);
-                } else {
-                    this.dealer.stand();
                 }
-            } else if (this.dealer.getScore() < 17) {
-                this.dealer.hit(card);
-            } else {
-                this.dealer.stand()
             }
+
+            if (localStorage.getItem('difficulty') === 'normal') {
+
+                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
+                    let t = Math.random();
+                    if (t > 4) {
+                        this.dealer.hit(card);
+                    }
+                } else if (this.dealer.getScore() < 17) {
+                    this.dealer.hit(card);
+                }
+            }
+
+            if (localStorage.getItem('difficulty') === 'normal') {
+
+                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
+                    let t = Math.random();
+                    if (t > 2) {
+                        this.dealer.hit(card);
+                    }
+                } else if (this.dealer.getScore() < 17) {
+                    this.dealer.hit(card);
+                }
+            }
+
             document.getElementById(this.dealer.element).innerHTML += card.view();
             this.dealerScore.innerHTML = this.dealer.getScore();
 
@@ -99,18 +125,18 @@ let Game = (function () {
 
             //Rule set
             if (dealerBlackjack && !playerBlackjack) {
-                this.playerMoney.innerHTML = this.playerMoney.textContent - this.playerStake.value;
+                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) - parseInt(this.playerStake.value);
                 this.gameEnded('You lost!');
                 break;
             } else if (dealerBlackjack && playerBlackjack) {
                 this.gameEnded('Draw!');
                 break;
             } else if (!dealerBlackjack && playerBlackjack) {
-                this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 3;
+                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 3);
                 this.gameEnded('You won!');
                 break;
             } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
-                this.playerMoney.innerHTML = this.playerMoney.textContent + this.playerStake.value * 2;
+                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
                 this.gameEnded('You won!');
                 break;
             } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
@@ -177,6 +203,7 @@ let Game = (function () {
         this.startButton = document.getElementById('start');
         this.hitButton = document.getElementById('hit');
         this.standButton = document.getElementById('stand');
+        this.replayButton = document.getElementById('replay');
         this.showGraphButton = document.getElementById('showGraphButton');
 
         //attaching event handlers        
@@ -185,9 +212,8 @@ let Game = (function () {
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
-
+        this.replayButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
-
     }
 
     function bernoulliApplication(p) {
@@ -319,7 +345,7 @@ let Game = (function () {
                 document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
             }
         }
-        this.bustProbability.innerHTML = this.computeBust()
+        this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
         this.setMessage("Hit or Stand");
     }
 
@@ -331,6 +357,7 @@ let Game = (function () {
         this.startButton.disabled = false;
         this.hitButton.disabled = true;
         this.standButton.disabled = true;
+        this.replayButton.disabled = true;
     }
 
     /*
