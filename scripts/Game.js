@@ -41,26 +41,26 @@ let Game = (function () {
             document.getElementById('obtainingCard').oninput = function () {
                 document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
             }
-            this.playerProbability.innerHTML = ((combination(4, 1) * combination(16, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
-            this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
-            //proba blackjack = just to have an AS
+            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
             if (player.hand.length == 10) {
                 this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
-                this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
+                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+            } else {
+                this.playerProbability.innerHTML = 0
             }
         } else if (this.inequal === true) {
             document.getElementById('obtainingCard').oninput = function () {
                 document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
             }
-            this.playerProbability.innerHTML = ((combination(12, 1) * combination(20, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
-            this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
-            //proba blackjack = just to have an AS
+            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+
             if (player.hand.length == 10) {
                 this.playerProbability.innerHTML = ((combination(12, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
-                this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
+                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+            } else {
+                this.playerProbability.innerHTML = 0
             }
         }
-
         //if over, then player looses
         if (this.player.getScore() > 21) {
             this.playerMoney.innerHTML = this.playerMoney.textContent - this.playerStake.value;
