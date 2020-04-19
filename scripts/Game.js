@@ -36,9 +36,10 @@ let Game = (function () {
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
+        this.bustProbability.innerHTML = this.computeBust()
         if (this.inequal === false) {
             document.getElementById('obtainingCard').oninput = function () {
-                document.getElementById('chosen-card').innerHTML = obtainingCard(this.value)
+                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
             }
             this.playerProbability.innerHTML = ((combination(4, 1) * combination(16, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
             this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
@@ -48,6 +49,9 @@ let Game = (function () {
                 this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             }
         } else if (this.inequal === true) {
+            document.getElementById('obtainingCard').oninput = function () {
+                document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
+            }
             this.playerProbability.innerHTML = ((combination(12, 1) * combination(20, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
             this.expectedValue.innerHTML = ((1 - this.playerProbability) * this.playerStake.value) - (this.playerProbability * (3 * this.playerStake.value)).toFixed(2)
             //proba blackjack = just to have an AS
@@ -219,7 +223,7 @@ let Game = (function () {
         return count;
     }
 
-    //proba of obtening card value X
+    //proba of obtaining card value X
     function obtainingCard(x) {
         let nx = countCard(x)
         if (x === 'A' || x === '2' || x === '3' || x === '4' || x === '5' || x === '6' || x === '7' || x === '8' || x === '9' || x === '10' || x === 'J' || x === 'Q' || x === 'K') {
@@ -227,6 +231,19 @@ let Game = (function () {
                 return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             } else {
                 return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+            }
+        } else {
+            console.log("Card doesn't exist")
+        }
+    }
+
+    function obtainingCardInequally(x) {
+        let nx = countCard(x)
+        if (x === 'A' || x === '2' || x === '5' || x === '7' || x === '8' || x === '9' || x === '10' || x === 'J' || x === 'Q' || x === 'K') {
+            if (x !== 10) {
+                return ((12 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+            } else {
+                return ((20 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
         } else {
             console.log("Card doesn't exist")
@@ -296,7 +313,11 @@ let Game = (function () {
         this.cardProbability = document.getElementById('obtainingCard');
 
         cardProbability.oninput = function () {
-            document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
+            if (inequal === false) {
+                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
+            } else {
+                document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
+            }
         }
         this.bustProbability.innerHTML = this.computeBust()
         this.setMessage("Hit or Stand");
