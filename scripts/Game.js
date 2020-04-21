@@ -358,6 +358,10 @@ let Game = (function () {
         If the player wins or looses
     */
     this.gameEnded = function (str) {
+        if (this.playerMoney.textContent === 0 || this.playerMoney.textContent < 0) {
+            alert("You got no money");
+            window.location.href = '../index.html';
+        }
         this.setMessage(str);
         this.startButton.disabled = false;
         this.hitButton.disabled = true;
