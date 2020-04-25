@@ -30,7 +30,17 @@ let Game = (function () {
     */
     this.hitButtonHandler = function () {
         //deal a card and add to player's hand
-        let card = Deck.deck.pop();
+        let card;
+        if (this.inequal === false && this.numberCard === 52) {
+            card = Deck.deck[Deck.getRandomCard()]
+        } else if (this.inequal === true && this.numberCard === 52) {
+            card = Deck.deck[Deck.getRandomCardInequal()]
+        } else if (this.inequal === false && this.numberCard === 32) {
+            card = Deck.deck[Deck.getRandomCardSmall()]
+        } else if (this.inequal === true && this.numberCard === 32) {
+            card = Deck.deck[Deck.getRandomCardInequalSmall()]
+        }
+        console.log(card)
         this.player.hit(card);
 
         //render the card and score
@@ -44,18 +54,6 @@ let Game = (function () {
             this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
             if (player.hand.length == 10) {
                 this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
-                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
-            } else {
-                this.playerProbability.innerHTML = 0
-            }
-        } else if (this.inequal === true) {
-            document.getElementById('obtainingCard').oninput = function () {
-                document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
-            }
-            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
-
-            if (player.hand.length == 10) {
-                this.playerProbability.innerHTML = ((combination(12, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
                 this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
             } else {
                 this.playerProbability.innerHTML = 0
@@ -232,9 +230,11 @@ let Game = (function () {
         } else {
             this.inequal = true;
             if (this.numberCard = 32) {
-                Deck.initInequallySmall();
+                Deck.initSmall();
+
             } else if (this.numberCard == 52) {
-                Deck.initInequally();
+                Deck.init();
+
             }
         }
     }
@@ -306,18 +306,18 @@ let Game = (function () {
     this.start = function () {
         let inequal = false;
 
-        //initilaise and shuffle the deck of cards
+        //initilaise deck of cards
         bernoulliApplication(Math.random());
         Deck.shuffle();
+
         //deal one card to dealer
         this.dealer = new Player('dealer', [Deck.deck.pop()]);
         //deal two cards to player
         this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
-
         this.numberCardHand = this.player.hand.length;
         this.numberCardDealer = this.dealer.hand.length;
         const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
-        const hand21Inequal = ((combination(12, 1) * combination(20, 1)) / combination(this.numberCard, 2)).toFixed(2)
+        const hand21Inequal = ((combination(10, 1) * combination(14, 1)) / combination(this.numberCard, 2)).toFixed(2)
         if (inequal === false) {
             this.playerProbability.innerHTML = hand21Probability;
             this.expectedValue.innerHTML = ((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value)).toFixed(2)

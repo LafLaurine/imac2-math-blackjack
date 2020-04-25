@@ -3,9 +3,10 @@
 	@param {String} rank
 	@param {String} suit
 */
-function Card(rank, suit) {
+function Card(rank, suit, weight) {
     this.rank = rank;
     this.suit = suit;
+    this.weight = weight;
 }
 
 /*

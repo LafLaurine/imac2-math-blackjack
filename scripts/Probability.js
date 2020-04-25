@@ -1,13 +1,29 @@
 function bernoulli(p) {
     let t = Math.random();
-    let esperance = p;
-    let letiance = p * (1 - p);
     if (t < p) {
         // success
         return true;
     }
     // failure
     return false;
+}
+
+
+function gaussianRandom() {
+    var r1, r2, w, X1, X2;
+
+    do {
+        r1 = 2 * Math.random() - 1;
+        r2 = 2 * Math.random() - 1;
+        w = r1 * r1 + r2 * r2;
+    } while (w >= 1);
+
+    w = Math.sqrt((-2 * Math.log(w)) / w);
+
+    X1 = r1 * w;
+    X2 = r2 * w;
+
+    return X1;
 }
 
 function factorial(k) {
