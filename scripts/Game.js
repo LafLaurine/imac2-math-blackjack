@@ -259,28 +259,22 @@ let Game = (function () {
         let nx = countCard(x)
         if (x === 'A' || x === '2' || x === '3' || x === '4' || x === '5' || x === '6' || x === '7' || x === '8' || x === '9' || x === '10' || x === 'J' || x === 'Q' || x === 'K') {
             if (x !== 10) {
-                return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+                if (this.inequal === false)
+                    return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+                else
+                    return ((10 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+
+
             } else {
-                return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+                if (this.inequal === false)
+                    return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+                else
+                    return ((14 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
         } else {
             console.log("Card doesn't exist")
         }
     }
-
-    function obtainingCardInequally(x) {
-        let nx = countCard(x)
-        if (x === 'A' || x === '2' || x === '5' || x === '7' || x === '8' || x === '9' || x === '10' || x === 'J' || x === 'Q' || x === 'K') {
-            if (x !== 10) {
-                return ((12 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
-            } else {
-                return ((20 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
-            }
-        } else {
-            console.log("Card doesn't exist")
-        }
-    }
-
 
     this.computeBust = function () {
         let nbUnknownCard = this.numberCard - this.numberCardHand
@@ -347,7 +341,7 @@ let Game = (function () {
             if (inequal === false) {
                 document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
             } else {
-                document.getElementById('chosen-card').innerHTML = (obtainingCardInequally(this.value).toFixed(2))
+                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
             }
         }
         this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
