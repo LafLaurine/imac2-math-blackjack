@@ -1,67 +1,61 @@
-let Deck = new function () {
+const Deck = new function () {
+	this.deck;
 	this.ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	this.suits = ['hearts', 'spades', 'diamonds', 'clubs'];
-	this.deck;
 	this.ranksSmall = ['A', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
+	//Weights
 	this.weight = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] //weight of each element 
 	this.weightInequal = [19, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72] //weight of each element 
 	this.weightSmall = [2, 2, 2, 2, 2, 2, 2, 2] //weight of each element 
 	this.weightInequalSmall = [19, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72, 6.72] //weight of each element 
 
-
-	var totalweight = eval(this.weight.join("+")) //get total weight 
-	var totalweightSmall = eval(this.weight.join("+")) //get total weight 
-	var totalweightIneq = eval(this.weightInequal.join("+")) //get total weight
-	var totalweightIneqSmall = eval(this.weightInequal.join("+")) //get total weight
-
-	var weighedCards = new Array() //new array to hold "weighted" cards
-	var currentCard = 0
+	const totalweight = eval(this.weight.join("+")) //get total weight 
+	const totalweightSmall = eval(this.weight.join("+")) //get total weight 
+	const totalweightIneq = eval(this.weightInequal.join("+")) //get total weight
+	const totalweightIneqSmall = eval(this.weightInequal.join("+")) //get total weight
+	const weighedCards = new Array() //new array to hold "weighted" cards
+	const currentCard = 0
 
 	this.getRandomCard = function () {
-
-		while (currentCard < this.ranks.length) { //step through each this.ranks element
-			for (i = 0; i < this.weight[currentCard]; i++)
-				weighedCards[weighedCards.length] = this.ranks[currentCard]
-			currentCard++
+		if (this.ranks.length = 12) {
+			while (currentCard < this.ranks.length) { //step through each this.ranks element
+				for (i = 0; i < this.weight[currentCard]; i++)
+					weighedCards[weighedCards.length] = this.ranks[currentCard]
+				currentCard++
+			}
+			const randomnumber = Math.floor(Math.random() * totalweight)
+			return randomnumber;
+		} else {
+			while (currentCard < this.ranks.length) { //step through each this.ranks element
+				for (i = 0; i < this.weightSmall[currentCard]; i++)
+					weighedCards[weighedCards.length] = this.ranks[currentCard]
+				currentCard++
+			}
+			const randomnumber = Math.floor(Math.random() * totalweightSmall)
+			return randomnumber;
 		}
-		var randomnumber = Math.floor(Math.random() * totalweight)
-		return randomnumber;
-	}
-
-	this.getRandomCardSmall = function () {
-
-		while (currentCard < this.ranks.length) { //step through each this.ranks element
-			for (i = 0; i < this.weightSmall[currentCard]; i++)
-				weighedCards[weighedCards.length] = this.ranks[currentCard]
-			currentCard++
-		}
-		var randomnumber = Math.floor(Math.random() * totalweightSmall)
-		return randomnumber;
 	}
 
 	this.getRandomCardInequal = function () {
-
-		while (currentCard < this.ranks.length) { //step through each this.ranks element
-			for (i = 0; i < this.weightInequal[currentCard]; i++)
-				weighedCards[weighedCards.length] = this.ranks[currentCard]
-			currentCard++
+		if (this.ranks.length = 12) {
+			while (currentCard < this.ranks.length) { //step through each this.ranks element
+				for (i = 0; i < this.weightInequal[currentCard]; i++)
+					weighedCards[weighedCards.length] = this.ranks[currentCard]
+				currentCard++
+			}
+			const randomnumber = Math.floor(Math.random() * totalweightIneq)
+			return randomnumber;
+		} else {
+			while (currentCard < this.ranks.length) { //step through each this.ranks element
+				for (i = 0; i < this.weightInequalSmall[currentCard]; i++)
+					weighedCards[weighedCards.length] = this.ranks[currentCard]
+				currentCard++
+			}
+			const randomnumber = Math.floor(Math.random() * totalweightIneqSmall)
+			return randomnumber;
 		}
-		var randomnumber = Math.floor(Math.random() * totalweightIneq)
-		return randomnumber;
 	}
-
-	this.getRandomCardInequalSmall = function () {
-
-		while (currentCard < this.ranks.length) { //step through each this.ranks element
-			for (i = 0; i < this.weightInequalSmall[currentCard]; i++)
-				weighedCards[weighedCards.length] = this.ranks[currentCard]
-			currentCard++
-		}
-		var randomnumber = Math.floor(Math.random() * totalweightIneqSmall)
-		return randomnumber;
-	}
-
 
 	/*
 	    Fills up the deck array with cards

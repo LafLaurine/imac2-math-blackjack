@@ -1,4 +1,4 @@
-let Game = (function () {
+const Game = (function () {
     /*
         32 cards button event handler
     */
@@ -36,9 +36,9 @@ let Game = (function () {
         } else if (this.inequal === true && this.numberCard === 52) {
             card = Deck.deck[Deck.getRandomCardInequal()]
         } else if (this.inequal === false && this.numberCard === 32) {
-            card = Deck.deck[Deck.getRandomCardSmall()]
+            card = Deck.deck[Deck.getRandomCard()]
         } else if (this.inequal === true && this.numberCard === 32) {
-            card = Deck.deck[Deck.getRandomCardInequalSmall()]
+            card = Deck.deck[Deck.getRandomCardInequal()]
         }
         console.log(card)
         this.player.hit(card);

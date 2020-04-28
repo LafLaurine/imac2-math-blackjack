@@ -1,16 +1,16 @@
 function bernoulli(p) {
-    let t = Math.random();
+    const t = Math.random(); // return a pseudo random number between [0,1]
     if (t < p) {
-        // success
+        // success, deck is equiprobable
         return true;
     }
-    // failure
+    // failure, deck is inequal
     return false;
 }
 
 
 function gaussianRandom() {
-    var r1, r2, w, X1, X2;
+    var r1, r2, w, X1;
 
     do {
         r1 = 2 * Math.random() - 1;
@@ -21,8 +21,6 @@ function gaussianRandom() {
     w = Math.sqrt((-2 * Math.log(w)) / w);
 
     X1 = r1 * w;
-    X2 = r2 * w;
-
     return X1;
 }
 
@@ -46,7 +44,7 @@ function countCombinations(k, n) {
 
 //compute combination
 function combination(n, k) {
-    t = new Array(n); //n elements tab
+    const t = new Array(n); //n elements tab
     t[0] = 1;
     for (let i = 1; i <= n; i++) {
         t[i] = 1;
@@ -63,7 +61,7 @@ function hypergeometric(k, n, g, t) {
 //Poisson
 //cas limite de la loi binomiale pour lequel intervient le facteur temps 
 // loi de probabilité discrète qui décrit le comportement du nombre d'événements se produisant dans un intervalle de temps fixé
-// si ces événements se produisent avec une fréquence moyenne ou espérance connue, et indépendamment du temps écoulé depuis l'événement précédent
+// si ces événements se produisent avec une fréquence moyenne ou espérance connue et indépendamment du temps écoulé depuis l'événement précédent
 //lambda fois l'événement en moyenne par delta T
 //quelle est la proba de l'evt exactement k fois dans ce delta T ?
 function poisson(k, lambda) {

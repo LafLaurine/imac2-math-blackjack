@@ -15,8 +15,7 @@ function Card(rank, suit, weight) {
 	player's hand
 */
 Card.prototype.getValue = function (currentTotal) {
-    var value = 0;
-
+    let value = 0;
     if (this.rank == 'A' && currentTotal < 11) {
         value = 11;
     } else if (this.rank == 'A') {
@@ -30,7 +29,7 @@ Card.prototype.getValue = function (currentTotal) {
 }
 
 Card.prototype.view = function () {
-    var htmlEntities = {
+    const htmlEntities = {
         'hearts': '&#9829;',
         'diamonds': '&#9830;',
         'clubs': '&#9827;',
