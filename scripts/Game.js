@@ -152,29 +152,33 @@ const Game = (function () {
     }
 
     this.showGraph = function () {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-            // The data for our dataset
-            data: {
-                labels: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
-                datasets: [{
-                    label: 'Card distribution',
-                    backgroundColor: 'rgb(99, 203, 255)',
-                    borderColor: 'rgb(99, 203, 255)',
-                    data: [1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 15, 14, 13, 12, 11, 10, 18, 8, 1]
-                }]
-            },
+        if (this.showGraphButton.className === "green") {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'bar',
+                // The data for our dataset
+                data: {
+                    labels: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
+                    datasets: [{
+                        label: 'Card distribution',
+                        backgroundColor: 'rgb(99, 203, 255)',
+                        borderColor: 'rgb(99, 203, 255)',
+                        data: [1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 15, 14, 13, 12, 11, 10, 18, 8, 1]
+                    }]
+                },
 
-            // Configuration options go here
-            options: {}
-        });
-        this.showGraphButton.textContent = "Hide graph";
-        if (this.showGraphButton.innerHTML === "Hide graph") {
-            // chart.destroy();
-            this.showGraphButton.textContent = "Show card graph distribution";
+                // Configuration options go here
+                options: {}
+            });
+            this.showGraphButton.classList.remove("green");
+            this.showGraphButton.classList.add("red");
         }
+    }
+
+    this.removeGraph = function () {
+        console.log("dkd");
+        document.getElementById("myChart").destroy();
     }
 
     /*
@@ -217,7 +221,11 @@ const Game = (function () {
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
-        this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
+
+        if (this.showGraphButton.className === "green")
+            this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
+        else
+            this.showGraphButton.addEventListener('click', this.removeGraph.bind(this));
     }
 
     function bernoulliApplication(p) {
