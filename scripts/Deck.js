@@ -15,7 +15,7 @@ const Deck = new function () {
 	const totalweightIneq = eval(this.weightInequal.join("+")) //get total weight
 	const totalweightIneqSmall = eval(this.weightInequal.join("+")) //get total weight
 	const weighedCards = new Array() //new array to hold "weighted" cards
-	const currentCard = 0
+	let currentCard = 0
 
 	this.getRandomCard = function () {
 		if (this.ranks.length = 12) {

@@ -1,18 +1,12 @@
-/*
-  BlackjackJS CSS
-  @author Stayko Chalakov
-	@version 1.0
-	@date 29.06.2017
-*/
 html {
     overflow: hidden;
     height: 100%;
+    width: 100%;
 }
 
 .sidebar {
     background: rgba(30, 66, 0, 1);
-    width: 30%;
-    position: relative;
+    width: 20%;
     float: right;
     z-index: 1;
 }
@@ -23,17 +17,12 @@ html {
 }
 
 .element {
-    color:white;
+    color: white;
 }
 
 body {
     background: rgba(30, 66, 0, 1);
     background: linear-gradient(to bottom, rgba(30, 66, 0, 1) 0%, rgba(35, 161, 16, 1) 100%);
-    min-height: 100%;
-}
-
-#table {
-    position: relative;
 }
 
 .mode {
@@ -45,6 +34,7 @@ body {
 #choose-mode {
     color: #F6F7EB;
     font-size: 50px;
+    margin-top: 2em;
 }
 
 #dealer {
@@ -59,7 +49,6 @@ body {
     justify-content: flex-start;
     height: 214px;
     position: relative;
-    width: 100%;
 }
 
 #deck {
@@ -141,10 +130,9 @@ body {
     margin: 20px 0;
 }
 
-.score, .probability {
+.score,
+.probability {
     position: relative;
-    text-align: center;
-    font-family: Gill Sans;
     color: #F6F7EB;
     opacity: 0.7;
     font-size: 20px;
@@ -155,20 +143,17 @@ body {
 /* footer */
 #panel {
     text-align: center;
-    background-color: #40434E;
-    border-top: 1px solid #070707;
+    background-color: rgba(255, 255, 255, 0.301);
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding-top: 10px;
 }
 
-#status {
-    font-family: Gill Sans;
+#status,
+#choose-nbCard {
     text-shadow: 1px 1px 2px rgba(10, 10, 10, 1);
-    color: #55acee;
+    color: white;
     position: relative;
-    opacity: 0.7;
     font-size: 20px;
 }
 
@@ -180,10 +165,9 @@ button {
     font-size: 20px;
     text-decoration: none;
     margin: 20px;
-    color: #F6F7EB;
+    color: white;
     position: relative;
     display: inline-block;
-    font-family: Gill Sans;
     text-shadow: 1px 1px 2px rgba(10, 10, 10, 1);
 }
 

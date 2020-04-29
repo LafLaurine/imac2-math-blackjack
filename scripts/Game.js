@@ -40,7 +40,6 @@ const Game = (function () {
         } else if (this.inequal === true && this.numberCard === 32) {
             card = Deck.deck[Deck.getRandomCardInequal()]
         }
-        console.log(card)
         this.player.hit(card);
 
         //render the card and score
@@ -153,11 +152,10 @@ const Game = (function () {
     }
 
     this.showGraph = function () {
-        let ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'bar',
-
             // The data for our dataset
             data: {
                 labels: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
@@ -172,8 +170,12 @@ const Game = (function () {
             // Configuration options go here
             options: {}
         });
+        this.showGraphButton.textContent = "Hide graph";
+        if (this.showGraphButton.innerHTML === "Hide graph") {
+            // chart.destroy();
+            this.showGraphButton.textContent = "Show card graph distribution";
+        }
     }
-
 
     /*
         Initialise
@@ -216,7 +218,6 @@ const Game = (function () {
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
         this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
-
     }
 
     function bernoulliApplication(p) {
