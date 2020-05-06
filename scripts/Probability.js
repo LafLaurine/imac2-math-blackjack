@@ -1,3 +1,10 @@
+const eventTab = ["Due to the stock market spit, you only start with 50 coins...",
+    "Wow! You're lucky a millionaire left you 1,000 coins.",
+    "You seem nice, you can start with 500 coins."
+]
+//n = eventTab.size()
+//p : proba chosen
+
 function bernoulli(p) {
     const t = Math.random(); // return a pseudo random number between [0,1]
     if (t < p) {

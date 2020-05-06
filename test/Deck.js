@@ -14,7 +14,7 @@ let Deck = new function () {
 	const totalweightIneq = eval(this.weightInequal.join("+")) //get total weight
 
 	const weighedCards = new Array() //new array to hold "weighted" cards
-	const currentCard = 0
+	let currentCard = 0
 
 	this.getRandomCardInequal = function () {
 		while (currentCard < this.ranks.length) { //step through each this.ranks element
@@ -45,6 +45,6 @@ Deck.init()
 console.log(Deck.deck)
 const container = document.getElementById('truc');
 for (let i = 0; i < 52; i++) {
-	container.append('<div>' + Deck.getRandomCardInequal() + '</div>');
+	container.append(" " + Deck.getRandomCardInequal());
 	console.log(Deck.getRandomCardInequal())
 }
