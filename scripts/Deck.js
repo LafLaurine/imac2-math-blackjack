@@ -2,10 +2,6 @@ const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 const suits = ['♡', '♤', '♢', '♧'];
 const ranksSmall = ['A', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var prob = [10]; //Chances of being selected
-//A♡ has 10% chance to be draw, other card have 1.77%
-for (let s = 0; s < 51; s++) {
-	prob.push(1.77);
-}
 
 class Deck {
 	constructor() {
@@ -66,6 +62,10 @@ class Deck {
 				this.deck.push(new Card(ranks[r], suits[s]));
 			}
 		}
+		//A♡ has 10% chance to be draw, other card have 1.77%
+		for (let s = 0; s < this.deck.length - 4; s++) {
+			prob.push(1.77);
+		}
 	}
 
 	initSmall() {
@@ -74,10 +74,15 @@ class Deck {
 				this.deck.push(new Card(ranks[r], suits[s]));
 			}
 		}
+		//A♡ has 10% chance to be draw, other card have 1.77%
+		for (let s = 0; s < this.deck.length - 4; s++) {
+			prob.push(1.77);
+		}
 	}
 
 
 	draw() {
+		console.log(this.deck.splice(0, 1)[0])
 		return this.deck.splice(0, 1)[0];
 	}
 
@@ -93,7 +98,9 @@ class Deck {
 		var acc = 0;
 		prob = prob.map(el => (acc = el + acc));
 		var rand = Math.random() * sum;
-		return Object.values(deck[prob.filter(el => el <= rand).length]);
+		let card = new Card(Object.values(deck[prob.filter(el => el <= rand).length])[0], Object.values(deck[prob.filter(el => el <= rand).length])[0]);
+		console.log(card)
+		return card;
 	}
 
 	shuffleInequal() {
@@ -103,7 +110,7 @@ class Deck {
 		}
 
 		for (let i = 0; i < 1000; i++) {
-			let rnd = chooseWeighted(deck, prob);
+			let rnd = this.chooseWeighted(this.deck, prob);
 			obj[rnd] += 1;
 		}
 		return obj;

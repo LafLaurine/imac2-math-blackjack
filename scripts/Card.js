@@ -34,10 +34,16 @@ Card.prototype.getValue = function (currentTotal) {
 }
 
 Card.prototype.view = function () {
+    const htmlEntities = {
+        '♡': '&#9829;',
+        '♢': '&#9830;',
+        '♧': '&#9827;',
+        '♤': '&#9824;'
+    }
     return `
 			<div class="card ` + this.suit + `">
 				<div class="top rank">` + this.rank + `</div>
-				<div class="suit">` + this.suit + `</div>
+				<div class="suit">` + htmlEntities[this.suit] + `</div>
 				<div class="bottom rank">` + this.rank + `</div>
 			</div>
 		`;

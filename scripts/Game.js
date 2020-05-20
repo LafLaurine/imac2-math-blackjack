@@ -1,4 +1,6 @@
 const Game = (function () {
+
+    let deck;
     /*
         32 cards button event handler
     */
@@ -30,18 +32,24 @@ const Game = (function () {
     */
     this.hitButtonHandler = function () {
         //deal a card and add to player's hand
-        let card;
+        let card = new Card();
         if (this.inequal === false && this.numberCard === 52) {
-            card = deck[deck.draw()]
+            card = deck.draw();
+            console.log(card)
         } else if (this.inequal === true && this.numberCard === 52) {
-            card = deck[deck.chooseWeighted(deck, prob)]
+            card = deck.shuffleInequal();
+            console.log(card)
+
         } else if (this.inequal === false && this.numberCard === 32) {
-            card = deck[deck.draw()]
+            card = deck.draw();
+            console.log(card)
+
         } else if (this.inequal === true && this.numberCard === 32) {
-            card = deck[deck.chooseWeighted(deck, prob)]
+            card = deck.shuffleInequal();
+            console.log(card)
         }
         this.player.hit(card);
-
+        console.log(card)
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
@@ -285,8 +293,7 @@ const Game = (function () {
     */
     this.start = function () {
         let inequal = false;
-        let deck = new Deck();
-        console.log(deck)
+        deck = new Deck();
         //initilaise deck of cards
         if (bernoulli(Math.random()) == true) {
             this.inequal = false;

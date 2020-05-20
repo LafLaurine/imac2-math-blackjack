@@ -92,13 +92,13 @@ body {
     border-radius: 5px;
 }
 
-.diamonds,
-.hearts {
+.♢,
+.♡ {
     color: #E94F37;
 }
 
-.spades,
-.clubs {
+.♤,
+.♧ {
     color: #393E41;
 }
 
