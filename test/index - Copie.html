@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
+</head>
+
+<body>
+    <div id="truc"></div>
+    <script type="text/javascript">
+    
+    var items = [
+    "bike",    //40% chance to select
+    "car",     //30% chance to select
+    "boat",    //15% chance to select
+    "train",   //10% chance to select
+    "plane",   //5%  chance to select
+];
+var chances = [40, 30, 15, 10, 5]; //Chances of being selected
+
+function chooseWeighted(items, chances) {
+    var sum = chances.reduce((acc, el) => acc + el, 0);
+    var acc = 0;
+    chances = chances.map(el => (acc = el + acc));
+    var rand = Math.random() * sum;
+    return items[chances.filter(el => el <= rand).length];
+}
+
+let obj = {};
+    for(let i=0;i<items.length;i++)
+    {
+        obj[items[i]] = 0;
+    }
+
+for(let i=0;i<1000;i++)
+{    
+    let rnd = chooseWeighted(items,chances);
+    obj[rnd]+=1;
+}
+
+
+console.log(obj);
+
+    </script>
+
+</body>
+
+</html>

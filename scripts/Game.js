@@ -174,11 +174,9 @@ const Game = (function () {
             this.showGraphButton.classList.remove("green");
             this.showGraphButton.classList.add("red");
         }
-    }
-
-    this.removeGraph = function () {
-        console.log("dkd");
-        document.getElementById("myChart").destroy();
+        else {
+            document.getElementById("myChart").remove();
+        }
     }
 
     /*
