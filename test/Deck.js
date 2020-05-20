@@ -1,5 +1,5 @@
 class Card {
-	constructor(rank,suit) {
+	constructor(rank, suit) {
 		this.rank = rank;
 		this.suit = suit;
 	}
@@ -16,11 +16,11 @@ const suits = ['♡', '♤', '♢', '♧'];
 
 //weight of each element
 const weightInequal = {
-	"A♡" : 4.75,
+	"A♡": 4.75,
 	"A♤": 4.75,
 	"A♢": 4.75,
 	"A♧": 4.75
-} 
+}
 const weightIneq = eval(Object.values(weightInequal).join("+"))
 const totalweightIneq = ((100 - weightIneq) / 12) / 4;
 
@@ -33,7 +33,7 @@ for(let i = 0; i < 48; i++) {
 	weights.push(totalweightIneq);
 }*/
 
-for(let i = 0; i < 12; i++) {
+for (let i = 0; i < 12; i++) {
 	weightInequal[ranks[i + 1] + "♡"] = totalweightIneq;
 	weightInequal[ranks[i + 1] + "♤"] = totalweightIneq;
 	weightInequal[ranks[i + 1] + "♢"] = totalweightIneq;
@@ -43,7 +43,7 @@ for(let i = 0; i < 12; i++) {
 class Deck {
 	constructor() {
 		this.init();
-	} 
+	}
 	/*
 	    Fills up the deck array with cards
 	*/
@@ -58,7 +58,7 @@ class Deck {
 	}
 
 	draw() {
-		return this.deck.splice(0,1)[0];
+		return this.deck.splice(0, 1)[0];
 	}
 
 	shuffle() {
@@ -67,7 +67,7 @@ class Deck {
 			[this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
 		}
 	}
-	
+
 	shuffleInequal() {
 		/*const sampler = new WeightedSampler(Object.keys(weightInequal), weights);
 		let randomArray = Array.apply(null, Array(this.deck.length)).map(() => sampler.get());
@@ -77,14 +77,12 @@ class Deck {
 
 		let obj = JSON.parse(JSON.stringify(weightInequal));
 
-		for(let i=0;i<1;i++)
-		{
+		for (let i = 0; i < 1; i++) {
 			let weights = Object.values(obj);
 			let cards = Object.keys(obj);
 			let totalWeight = 0;
-			for(let val =0;val<weights.length;val++)
-			{
-				totalWeight+=weights[val];
+			for (let val = 0; val < weights.length; val++) {
+				totalWeight += weights[val];
 			}
 			console.log(totalWeight);
 
@@ -92,7 +90,7 @@ class Deck {
 
 			let card = cards.find((element, index) => rand <= weights[index]);
 
-			console.log(rand,card);
+			console.log(rand, card);
 
 			//let sampler = new WeightedSampler(Object.keys(arr), Object.values(arr));
 			//console.log(weightInequal);
@@ -133,12 +131,11 @@ for(let tirage = 1;tirage<=10;tirage++)
 
 deck.init();
 
-for(let tirage = 1;tirage<=10;tirage++)
-{
+for (let tirage = 1; tirage <= 10; tirage++) {
 	deck.init();
 	document.getElementById("truc").append(`tirage ${tirage}`);
 	document.getElementById("truc").append(document.createElement("br"));
 	document.getElementById("truc").append(document.createElement("br"))
 }
 
-document.getElementById("truc").append(	deck.shuffleInequal() + "     ");
+document.getElementById("truc").append(deck.shuffleInequal() + "     ");

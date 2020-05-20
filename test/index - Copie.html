@@ -9,39 +9,81 @@
 <body>
     <div id="truc"></div>
     <script type="text/javascript">
-    
-    var items = [
-    "bike",    //40% chance to select
-    "car",     //30% chance to select
-    "boat",    //15% chance to select
-    "train",   //10% chance to select
-    "plane",   //5%  chance to select
-];
-var chances = [40, 30, 15, 10, 5]; //Chances of being selected
+        class Card {
+            constructor(rank, suit) {
+                this.rank = rank;
+                this.suit = suit;
+            }
 
-function chooseWeighted(items, chances) {
-    var sum = chances.reduce((acc, el) => acc + el, 0);
-    var acc = 0;
-    chances = chances.map(el => (acc = el + acc));
-    var rand = Math.random() * sum;
-    return items[chances.filter(el => el <= rand).length];
-}
+            key() {
+                return `${this.rank}${this.suit}`;
+            }
+        }
+        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const suits = ['♡', '♤', '♢', '♧'];
 
-let obj = {};
-    for(let i=0;i<items.length;i++)
-    {
-        obj[items[i]] = 0;
-    }
+        deck = []; //empty the array
+        for (let s = 0; s < 4; s++) {
+            for (let r = 0; r < 13; r++) {
+                deck.push(new Card(ranks[r], suits[s]));
+            }
+        }
 
-for(let i=0;i<1000;i++)
-{    
-    let rnd = chooseWeighted(items,chances);
-    obj[rnd]+=1;
-}
+        console.log(deck);
+        var prob = [10]; //Chances of being selected
+        for (let s = 0; s < 51; s++) {
+            prob.push(1.77);
+        }
+        console.log(prob)
 
+        var items = [
+            "bike", //40% chance to select
+            "car", //30% chance to select
+            "boat", //15% chance to select
+            "train", //10% chance to select
+            "plane", //5%  chance to select
+        ];
+        var chances = [40, 30, 15, 10, 5]; //Chances of being selected
 
-console.log(obj);
+        function chooseWeighted(items, chances) {
+            var sum = chances.reduce((acc, el) => acc + el, 0);
+            var acc = 0;
+            chances = chances.map(el => (acc = el + acc));
+            var rand = Math.random() * sum;
+            return items[chances.filter(el => el <= rand).length];
+        }
 
+        let obj = {};
+        /* for (let i = 0; i < items.length; i++) {
+             console.log(obj)
+             obj[items[i]] = 0;
+         }
+
+         for (let i = 0; i < 1000; i++) {
+             let rnd = chooseWeighted(items, chances);
+             obj[rnd] += 1;
+         }*/
+
+        console.log(deck)
+
+        function chooseWeighted(deck, prob) {
+            var sum = prob.reduce((acc, el) => acc + el, 0);
+            var acc = 0;
+            prob = prob.map(el => (acc = el + acc));
+            var rand = Math.random() * sum;
+            return Object.values(deck[prob.filter(el => el <= rand).length]);
+        }
+
+        for (let i = 0; i < deck.length; i++) {
+            obj[Object.values(deck[i])] = 0;
+        }
+
+        for (let i = 0; i < 1000; i++) {
+            let rnd = chooseWeighted(deck, prob);
+            obj[rnd] += 1;
+        }
+
+        console.log(obj);
     </script>
 
 </body>

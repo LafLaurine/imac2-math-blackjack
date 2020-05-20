@@ -3,10 +3,15 @@
 	@param {String} rank
 	@param {String} suit
 */
-function Card(rank, suit, weight) {
-    this.rank = rank;
-    this.suit = suit;
-    this.weight = weight;
+class Card {
+    constructor(rank, suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+
+    key() {
+        return `${this.rank}${this.suit}`;
+    }
 }
 
 /*
@@ -29,16 +34,10 @@ Card.prototype.getValue = function (currentTotal) {
 }
 
 Card.prototype.view = function () {
-    const htmlEntities = {
-        'hearts': '&#9829;',
-        'diamonds': '&#9830;',
-        'clubs': '&#9827;',
-        'spades': '&#9824;'
-    }
     return `
 			<div class="card ` + this.suit + `">
 				<div class="top rank">` + this.rank + `</div>
-				<div class="suit">` + htmlEntities[this.suit] + `</div>
+				<div class="suit">` + this.suit + `</div>
 				<div class="bottom rank">` + this.rank + `</div>
 			</div>
 		`;

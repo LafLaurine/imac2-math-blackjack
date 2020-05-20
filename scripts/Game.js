@@ -32,13 +32,13 @@ const Game = (function () {
         //deal a card and add to player's hand
         let card;
         if (this.inequal === false && this.numberCard === 52) {
-            card = Deck.deck[Deck.getRandomCard()]
+            card = deck[deck.draw()]
         } else if (this.inequal === true && this.numberCard === 52) {
-            card = Deck.deck[Deck.getRandomCardInequal()]
+            card = deck[deck.chooseWeighted(deck, prob)]
         } else if (this.inequal === false && this.numberCard === 32) {
-            card = Deck.deck[Deck.getRandomCard()]
+            card = deck[deck.draw()]
         } else if (this.inequal === true && this.numberCard === 32) {
-            card = Deck.deck[Deck.getRandomCardInequal()]
+            card = deck[deck.chooseWeighted(deck, prob)]
         }
         this.player.hit(card);
 
@@ -76,7 +76,7 @@ const Game = (function () {
         //deals a card to the dealer until
         //one of the conditions below is true
         while (true) {
-            let card = Deck.deck.pop();
+            let card = deck.deck.pop();
             if (localStorage.getItem('difficulty') === 'easy') {
 
                 if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
@@ -173,8 +173,7 @@ const Game = (function () {
             });
             this.showGraphButton.classList.remove("green");
             this.showGraphButton.classList.add("red");
-        }
-        else {
+        } else {
             document.getElementById("myChart").remove();
         }
     }
@@ -226,26 +225,6 @@ const Game = (function () {
             this.showGraphButton.addEventListener('click', this.removeGraph.bind(this));
     }
 
-    function bernoulliApplication(p) {
-        if (bernoulli(p) == true) {
-            this.inequal = false;
-            if (this.numberCard == 32) {
-                Deck.initSmall();
-            } else if (this.numberCard == 52) {
-                Deck.init();
-            }
-        } else {
-            this.inequal = true;
-            if (this.numberCard = 32) {
-                Deck.initSmall();
-
-            } else if (this.numberCard == 52) {
-                Deck.init();
-
-            }
-        }
-    }
-
     function countCard(x) {
         let count = 0
         for (let i = 0; i < this.player.hand.length; i++) {
@@ -292,8 +271,8 @@ const Game = (function () {
         for (let i = 0; i < this.player.hand.length; i++) {
             cards.push(this.player.hand[i].rank)
         }
-        for (let i = 0; i < Deck.deck.length; i++) {
-            if (Deck.deck[i].getValue() >= limit) {
+        for (let i = 0; i < deck.length; i++) {
+            if (deck[i].getValue() >= limit) {
                 count++;
             }
         }
@@ -306,15 +285,32 @@ const Game = (function () {
     */
     this.start = function () {
         let inequal = false;
-
+        let deck = new Deck();
+        console.log(deck)
         //initilaise deck of cards
-        bernoulliApplication(Math.random());
-        Deck.shuffle();
+        if (bernoulli(Math.random()) == true) {
+            this.inequal = false;
+            if (this.numberCard == 32) {
+                deck.initSmall();
+            } else if (this.numberCard == 52) {
+                deck.initEqual();
+            }
+        } else {
+            this.inequal = true;
+            if (this.numberCard = 32) {
+                deck.initSmall();
+
+            } else if (this.numberCard == 52) {
+                deck.initEqual();
+
+            }
+        }
+        deck.shuffle();
 
         //deal one card to dealer
-        this.dealer = new Player('dealer', [Deck.deck.pop()]);
+        this.dealer = new Player('dealer', [deck.deck.pop()]);
         //deal two cards to player
-        this.player = new Player('player', [Deck.deck.pop(), Deck.deck.pop()]);
+        this.player = new Player('player', [deck.deck.pop(), deck.deck.pop()]);
         this.numberCardHand = this.player.hand.length;
         this.numberCardDealer = this.dealer.hand.length;
         const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
