@@ -56,14 +56,23 @@ class Deck {
 		this.deck = []; //empty the array
 	}
 
+
 	initEqual() {
 		for (let s = 0; s < 4; s++) {
 			for (let r = 0; r < 13; r++) {
 				this.deck.push(new Card(ranks[r], suits[s]));
 			}
 		}
+	}
+
+	initInequal() {
+		for (let s = 0; s < 4; s++) {
+			for (let r = 0; r < 13; r++) {
+				this.deck.push(new Card(ranks[r], suits[s]));
+			}
+		}
 		//A♡ has 10% chance to be draw, other card have 1.77%
-		for (let s = 0; s < this.deck.length - 4; s++) {
+		for (let s = 0; s < deck.length - 4; s++) {
 			prob.push(1.77);
 		}
 	}
@@ -74,15 +83,22 @@ class Deck {
 				this.deck.push(new Card(ranks[r], suits[s]));
 			}
 		}
+	}
+
+	initSmallInequal() {
+		for (let s = 0; s < 4; s++) {
+			for (let r = 0; r < 7; r++) {
+				this.deck.push(new Card(ranks[r], suits[s]));
+			}
+		}
 		//A♡ has 10% chance to be draw, other card have 1.77%
-		for (let s = 0; s < this.deck.length - 4; s++) {
+		for (let s = 0; s < deck.length - 4; s++) {
 			prob.push(1.77);
 		}
 	}
 
 
 	draw() {
-		console.log(this.deck.splice(0, 1)[0])
 		return this.deck.splice(0, 1)[0];
 	}
 
@@ -98,22 +114,20 @@ class Deck {
 		var acc = 0;
 		prob = prob.map(el => (acc = el + acc));
 		var rand = Math.random() * sum;
-		let card = new Card(Object.values(deck[prob.filter(el => el <= rand).length])[0], Object.values(deck[prob.filter(el => el <= rand).length])[0]);
-		console.log(card)
+		let card = new Card(Object.values(deck[prob.filter(el => el <= rand).length])[0], Object.values(deck[prob.filter(el => el <= rand).length])[1]);
 		return card;
 	}
 
-	shuffleInequal() {
-		let obj = {};
-		for (let i = 0; i < deck.length; i++) {
-			obj[Object.values(deck[i])] = 0;
-		}
-
+	drawInequal() {
+		let rnd;
 		for (let i = 0; i < 1000; i++) {
-			let rnd = this.chooseWeighted(this.deck, prob);
-			obj[rnd] += 1;
+			rnd = this.chooseWeighted(this.deck, prob);
 		}
-		return obj;
+		let index = (this.deck.map(function (item) {
+			return item.rank;
+		}).indexOf(rnd.rank));
+		this.deck.splice(index, 1);
+		return rnd;
 	}
 
 }

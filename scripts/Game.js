@@ -37,7 +37,7 @@ const Game = (function () {
             card = deck.draw();
             console.log(card)
         } else if (this.inequal === true && this.numberCard === 52) {
-            card = deck.shuffleInequal();
+            card = deck.drawInequal();
             console.log(card)
 
         } else if (this.inequal === false && this.numberCard === 32) {
@@ -45,11 +45,10 @@ const Game = (function () {
             console.log(card)
 
         } else if (this.inequal === true && this.numberCard === 32) {
-            card = deck.shuffleInequal();
-            console.log(card)
+            card = deck.drawInequal();
+            console.log(card);
         }
         this.player.hit(card);
-        console.log(card)
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
@@ -305,10 +304,10 @@ const Game = (function () {
         } else {
             this.inequal = true;
             if (this.numberCard = 32) {
-                deck.initSmall();
+                deck.initSmallInequal();
 
             } else if (this.numberCard == 52) {
-                deck.initEqual();
+                deck.initInequal();
 
             }
         }
