@@ -7,46 +7,6 @@ class Deck {
 	constructor() {
 		this.init();
 	}
-	/*
-		getRandomCard() {
-			if (this.ranks.length = 12) {
-				while (currentCard < this.ranks.length) { //step through each this.ranks element
-					for (i = 0; i < this.weight[currentCard]; i++)
-						weighedCards[weighedCards.length] = this.ranks[currentCard]
-					currentCard++
-				}
-				const randomnumber = Math.floor(Math.random() * totalweight)
-				return randomnumber;
-			} else {
-				while (currentCard < this.ranks.length) { //step through each this.ranks element
-					for (i = 0; i < this.weightSmall[currentCard]; i++)
-						weighedCards[weighedCards.length] = this.ranks[currentCard]
-					currentCard++
-				}
-				const randomnumber = Math.floor(Math.random() * totalweightSmall)
-				return randomnumber;
-			}
-		}
-
-		getRandomCardInequal() {
-			if (this.ranks.length = 12) {
-				while (currentCard < this.ranks.length) { //step through each this.ranks element
-					for (i = 0; i < this.weightInequal[currentCard]; i++)
-						weighedCards[weighedCards.length] = this.ranks[currentCard]
-					currentCard++
-				}
-				const randomnumber = Math.floor(Math.random() * totalweightIneq)
-				return randomnumber;
-			} else {
-				while (currentCard < this.ranks.length) { //step through each this.ranks element
-					for (i = 0; i < this.weightInequalSmall[currentCard]; i++)
-						weighedCards[weighedCards.length] = this.ranks[currentCard]
-					currentCard++
-				}
-				const randomnumber = Math.floor(Math.random() * totalweightIneqSmall)
-				return randomnumber;
-			}
-		}*/
 
 	/*
 	    Fills up the deck array with cards
@@ -72,7 +32,7 @@ class Deck {
 			}
 		}
 		//A♡ has 10% chance to be draw, other card have 1.77%
-		for (let s = 0; s < deck.length - 4; s++) {
+		for (let s = 0; s < deck.length; s++) {
 			prob.push(1.77);
 		}
 	}
@@ -92,14 +52,19 @@ class Deck {
 			}
 		}
 		//A♡ has 10% chance to be draw, other card have 1.77%
-		for (let s = 0; s < deck.length - 4; s++) {
+		for (let s = 0; s < deck.length; s++) {
 			prob.push(1.77);
 		}
 	}
 
 
 	draw() {
-		return this.deck.splice(0, 1)[0];
+		let card = this.deck.splice(0, 1)[0];
+		let index = (this.deck.map(function (item) {
+			return item.rank;
+		}).indexOf(card.rank));
+		this.deck.splice(index, 1);
+		return card;
 	}
 
 	shuffle() {

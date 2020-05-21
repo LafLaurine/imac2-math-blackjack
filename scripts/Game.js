@@ -1,6 +1,7 @@
 const Game = (function () {
 
     let deck;
+    
     /*
         32 cards button event handler
     */
@@ -33,20 +34,10 @@ const Game = (function () {
     this.hitButtonHandler = function () {
         //deal a card and add to player's hand
         let card = new Card();
-        if (this.inequal === false && this.numberCard === 52) {
+        if (this.inequal === false) {
             card = deck.draw();
-            console.log(card)
-        } else if (this.inequal === true && this.numberCard === 52) {
+        } else if (this.inequal === true) {
             card = deck.drawInequal();
-            console.log(card)
-
-        } else if (this.inequal === false && this.numberCard === 32) {
-            card = deck.draw();
-            console.log(card)
-
-        } else if (this.inequal === true && this.numberCard === 32) {
-            card = deck.drawInequal();
-            console.log(card);
         }
         this.player.hit(card);
         //render the card and score
@@ -64,6 +55,10 @@ const Game = (function () {
             } else {
                 this.playerProbability.innerHTML = 0
             }
+        }
+        //TODO
+        else {
+
         }
         //if over, then player looses
         if (this.player.getScore() > 21) {
@@ -199,15 +194,18 @@ const Game = (function () {
         playerStake.oninput = function () {
             if (parseInt(this.value) <= parseInt(document.getElementById('player-money').getElementsByTagName("span")[0].textContent)) {
                 this.stake = this.value;
+                document.getElementById('info').innerHTML = '';
                 document.getElementById('start').disabled = false;
-            } else if (parseInt(this.value) == 0) {
-                console.log("Cannot have value equal 0");
+            } else if (parseInt(this.value) === 0) {
+                document.getElementById('info').innerHTML = 'Your stake cannot be 0';
                 document.getElementById('start').disabled = true;
             } else {
-                console.log("Cannot have value superior");
+                document.getElementById('info').innerHTML = 'You don\'t have enough money';
                 document.getElementById('start').disabled = true;
             }
         };
+
+        //Store important elements
         this.playerProbability = document.getElementById('player-probability').getElementsByTagName("span")[0];
         this.bustProbability = document.getElementById('bust-probability').getElementsByTagName("span")[0];
         this.expectedValue = document.getElementById('expected-value').getElementsByTagName("span")[0];
@@ -219,7 +217,7 @@ const Game = (function () {
         this.standButton = document.getElementById('stand');
         this.showGraphButton = document.getElementById('showGraphButton');
 
-        //attaching event handlers        
+        //Attaching event handlers        
         this.smallButton.addEventListener('click', this.smallButtonHandler.bind(this));
         this.hugeButton.addEventListener('click', this.hugeButtonHandler.bind(this));
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
@@ -254,15 +252,9 @@ const Game = (function () {
             if (x !== 10) {
                 if (this.inequal === false)
                     return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
-                else
-                    return ((10 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
-
-
-            } else {
-                if (this.inequal === false)
-                    return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
-                else
-                    return ((14 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+            }
+            //TODO 
+            else {
             }
         } else {
             console.log("Card doesn't exist")
@@ -286,6 +278,24 @@ const Game = (function () {
         return count / nbUnknownCard;
     }
 
+    function bernoulliApplication(p) {
+        if (bernoulli(p) === true) {
+            this.inequal = false;
+            if (this.numberCard === 32) {
+                deck.initSmall();
+            } else if (this.numberCard == 52) {
+                deck.initEqual();
+            }
+        } else {
+            this.inequal = true;
+            if (this.numberCard === 32) {
+                deck.initSmallInequal();
+
+            } else if (this.numberCard === 52) {
+                deck.initInequal();
+            }
+        }
+    }
 
     /*
         Start the game
@@ -294,39 +304,24 @@ const Game = (function () {
         let inequal = false;
         deck = new Deck();
         //initilaise deck of cards
-        if (bernoulli(Math.random()) == true) {
-            this.inequal = false;
-            if (this.numberCard == 32) {
-                deck.initSmall();
-            } else if (this.numberCard == 52) {
-                deck.initEqual();
-            }
-        } else {
-            this.inequal = true;
-            if (this.numberCard = 32) {
-                deck.initSmallInequal();
-
-            } else if (this.numberCard == 52) {
-                deck.initInequal();
-
-            }
-        }
+        bernoulliApplication(Math.random());
         deck.shuffle();
 
         //deal one card to dealer
-        this.dealer = new Player('dealer', [deck.deck.pop()]);
+        this.dealer = new Player('dealer', [deck.draw()]);
         //deal two cards to player
-        this.player = new Player('player', [deck.deck.pop(), deck.deck.pop()]);
+        this.player = new Player('player', [deck.draw(), deck.draw()]);
         this.numberCardHand = this.player.hand.length;
         this.numberCardDealer = this.dealer.hand.length;
         const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
-        const hand21Inequal = ((combination(10, 1) * combination(14, 1)) / combination(this.numberCard, 2)).toFixed(2)
+        //TODO
+        ///const hand21Inequal;
         if (inequal === false) {
             this.playerProbability.innerHTML = hand21Probability;
             this.expectedValue.innerHTML = ((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value)).toFixed(2)
-        } else if (inequal === true) {
-            this.playerProbability.innerHTML = hand21Inequal;
-            this.expectedValue.innerHTML = ((1 - hand21Inequal) * this.playerStake.value) - (hand21Inequal * (3 * this.playerStake.value)).toFixed(2)
+        }
+        //TODO 
+        else if (inequal === true) {
         }
 
         //good hand probability compute
@@ -350,7 +345,7 @@ const Game = (function () {
             if (inequal === false) {
                 document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
             } else {
-                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
+                //TODO
             }
         }
         this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
