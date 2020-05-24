@@ -2,6 +2,9 @@ const eventTab = ["Due to the stock market spit, you only start with 50 coins...
     "Wow! You're lucky a millionaire left you 1,000 coins.",
     "You seem nice, you can start with 500 coins."
 ]
+
+bernouilliParameter = 0.5;
+
 //n = eventTab.size()
 //p : proba chosen
 
@@ -15,6 +18,21 @@ function bernoulli(p) {
     return false;
 }
 
+function binomialCoef(n, k) {
+    if ((typeof n !== 'number') || (typeof k !== 'number'))
+        return false;
+    var coeff = 1;
+    for (var x = n - k + 1; x <= n; x++) coeff *= x;
+    for (x = 1; x <= k; x++) coeff /= x;
+    return coeff;
+}
+
+
+function probaBinomiale(p, n, k) {
+    nk = binomialCoef(n, k);
+    proba = nk * Math.pow(p, k) * Math.pow((1 - p), n - k);
+    return proba;
+}
 
 function gaussianRandom() {
     var r1, r2, w, X1;
@@ -29,6 +47,19 @@ function gaussianRandom() {
 
     X1 = r1 * w;
     return X1;
+}
+
+// Si X suit une loi uniforme sur [a;b]
+// La probabilité de P(c≤X≤d)
+function uniforme(a, b, c, d) {
+    return ((d - c) / (b - a));
+}
+
+
+
+//DO SOMETHING
+function uniformeApplication(a, b, c, d) {
+    if (uniforme(a, b, c, d) < 0.5) {}
 }
 
 function factorial(k) {
@@ -75,4 +106,49 @@ function poisson(k, lambda) {
     let A = Math.pow(lambda, k);
     let L = Math.exp(-lambda);
     return ((A * L) / factorial(k))
+}
+
+
+// calcul de la moyenne d'un tableau
+function moyenne(data) {
+    var sum = data.reduce(function (sum, value) {
+        return sum + value;
+    }, 0);
+
+    var avg = sum / data.length;
+    return avg;
+}
+
+function ecartType(values) {
+    var avg = moyenne(values);
+    var squareDiffs = values.map(function (value) {
+        var diff = value - avg;
+        var sqrDiff = diff * diff;
+        return sqrDiff;
+    });
+    var avgSquareDiff = moyenne(squareDiffs);
+    var stdDev = Math.sqrt(avgSquareDiff);
+    return stdDev;
+}
+
+
+function ecartMoyen(data) {
+    var elem = [];
+    var b = data.length;
+    var final;
+    var avg = moyenne(data);
+    for (i = 0; i < b; i++) {
+        elem.push(Math.abs(data[i] - avg));
+    }
+    final = elem.reduce((f, g) => f + g, 0)
+    return final / b;
+}
+
+function drawStatsBernouilli() {
+    // Paramètre
+    document.getElementById("param").getElementsByTagName("span")[0].innerHTML = bernouilliParameter;
+    // Esperance
+    document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = bernouilliParameter;
+    // Variance
+    document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = bernouilliParameter * (1 - bernouilliParameter);
 }

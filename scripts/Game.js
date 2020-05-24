@@ -1,7 +1,6 @@
 const Game = (function () {
 
     let deck;
-    
     /*
         32 cards button event handler
     */
@@ -155,7 +154,11 @@ const Game = (function () {
 
     this.showGraph = function () {
         if (this.showGraphButton.className === "green") {
-            const ctx = document.getElementById('myChart').getContext('2d');
+
+            let canva = document.createElement('CANVAS');
+            canva.id = "myChart";
+            document.getElementsByClassName('element')[2].appendChild(canva);
+            const ctx = canva.getContext('2d');
             new Chart(ctx, {
                 // The type of chart we want to create
                 type: 'bar',
@@ -177,6 +180,8 @@ const Game = (function () {
             this.showGraphButton.classList.add("red");
         } else {
             document.getElementById("myChart").remove();
+            this.showGraphButton.classList.remove("red");
+            this.showGraphButton.classList.add("green");
         }
     }
 
@@ -223,11 +228,29 @@ const Game = (function () {
         this.startButton.addEventListener('click', this.startButtonHandler.bind(this));
         this.hitButton.addEventListener('click', this.hitButtonHandler.bind(this));
         this.standButton.addEventListener('click', this.standButtonHandler.bind(this));
+        this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
 
-        if (this.showGraphButton.className === "green")
-            this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
-        else
-            this.showGraphButton.addEventListener('click', this.removeGraph.bind(this));
+        let bernouilliInput = document.querySelector('#bernouilliInput');
+        let bernouilliParameterValue = document.querySelector('.bernouilliParameterValue');
+
+        bernouilliParameterValue.innerHTML = bernouilliInput.value;
+        bernouilliChangeStats(bernouilliInput.value);
+
+        bernouilliInput.addEventListener('input', function () {
+            bernouilliParameterValue.innerHTML = bernouilliInput.value;
+            bernouilliChangeStats(bernouilliInput.value);
+        }, false);
+
+        let binomialeInput = document.querySelector('#binomialeInput');
+        let binomialeParameterValue = document.querySelector('.binomialeParameterValue');
+
+        binomialeParameterValue.innerHTML = binomialeInput.value;
+        // binomialeChangeStats(binomialeInput.value);
+
+        binomialeInput.addEventListener('input', function () {
+            binomialeParameterValue.innerHTML = binomialeInput.value;
+            //  binomialeChangeStats(binomialeInput.value);
+        }, false);
     }
 
     function countCard(x) {
@@ -254,8 +277,7 @@ const Game = (function () {
                     return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
             //TODO 
-            else {
-            }
+            else {}
         } else {
             console.log("Card doesn't exist")
         }
@@ -297,6 +319,30 @@ const Game = (function () {
         }
     }
 
+    function bernouilliChangeStats(bernouilliVariable) {
+        bernouilliParameter = bernouilliVariable;
+        bernoulliApplication(bernouilliVariable);
+        drawStatsBernouilli();
+    }
+
+    function binomialeChangeStats(binomialeVariable) {
+        i = 0;
+        for (var key in stats) {
+            probaBinomiale(binomialeVariable, this.deck.length, i) * 100;
+            i++;
+        }
+        drawStatsBinomiale();
+    }
+
+    function drawStatsBinomiale() {
+        esperance = (this.deck.length * binomialeInput.value / 10);
+        variance = (this.deck.length * binomialeInput.value / 10 * (1 - binomialeInput.value / 10));
+        // Esperance
+        document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = esperance;
+        // Variance
+        document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = variance;
+    }
+
     /*
         Start the game
     */
@@ -304,16 +350,24 @@ const Game = (function () {
         let inequal = false;
         deck = new Deck();
         //initilaise deck of cards
-        bernoulliApplication(Math.random());
+        bernouilliParameter = 0.5;
+        bernoulliApplication(bernouilliParameter);
         deck.shuffle();
-
         //deal one card to dealer
         this.dealer = new Player('dealer', [deck.draw()]);
         //deal two cards to player
         this.player = new Player('player', [deck.draw(), deck.draw()]);
         this.numberCardHand = this.player.hand.length;
         this.numberCardDealer = this.dealer.hand.length;
-        const hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
+        let hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
+        if (this.numberCard === 52) {
+
+            //Si AS coeur pas tiré
+            let hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (90 / this.numberCard * 16 * 15.3 / (this.numberCard - 1));
+            //Si As coeur tiré
+            hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (100 / this.numberCard * 16 * 5.3 / (this.numberCard - 1));
+        }
+
         //TODO
         ///const hand21Inequal;
         if (inequal === false) {
@@ -322,6 +376,8 @@ const Game = (function () {
         }
         //TODO 
         else if (inequal === true) {
+            this.playerProbability.innerHTML = hand21InequalProbability;
+            this.expectedValue.innerHTML = ((1 - hand21InequalProbability) * this.playerStake.value) - (hand21InequalProbability * (3 * this.playerStake.value)).toFixed(2)
         }
 
         //good hand probability compute
