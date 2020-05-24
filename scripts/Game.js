@@ -1,6 +1,7 @@
 const Game = (function () {
 
     let deck;
+    let binomialeParameterValue;
     /*
         32 cards button event handler
     */
@@ -106,35 +107,29 @@ const Game = (function () {
         if (dealerBlackjack && !playerBlackjack) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) - parseInt(this.playerStake.value);
             this.loose++;
-            this.loosing = true;
             this.winning = false;
             this.gameEnded('You lost!');
         } else if (dealerBlackjack && playerBlackjack) {
             this.loose++;
-            this.loosing = true;
             this.winning = false;
             this.gameEnded('Draw!');
         } else if (!dealerBlackjack && playerBlackjack) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
-            this.loosing = false;
             this.winning = true;
             this.gameEnded('You won !');
         } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
-            this.loosing = false;
             this.winning = true;
             this.gameEnded('You won!');
         } else if (this.dealer.getScore() < 21 && this.player.getScore() <= 21) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
-            this.loosing = false;
             this.winning = true;
             this.gameEnded('You win !');
         } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
             this.loose++;
-            this.loosing = true;
             this.winning = false;
             this.gameEnded('You lost!');
         }
@@ -180,7 +175,6 @@ const Game = (function () {
         this.win = 0;
         this.winning = false;
         this.loose = 0;
-        this.loosing = false;
         this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
         this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
         this.playerMoney = document.getElementById('player-money').getElementsByTagName("span")[0];
@@ -232,15 +226,16 @@ const Game = (function () {
         }, false);
 
         let binomialeInput = document.querySelector('#binomialeInput');
-        let binomialeParameterValue = document.querySelector('.binomialeParameterValue');
+        binomialeParameterValue = document.querySelector('.binomialeParameterValue');
 
         binomialeParameterValue.innerHTML = binomialeInput.value;
-        // binomialeChangeStats(binomialeInput.value);
+        binomialeChangeStats(binomialeInput.value);
 
         binomialeInput.addEventListener('input', function () {
             binomialeParameterValue.innerHTML = binomialeInput.value;
-            //  binomialeChangeStats(binomialeInput.value);
+            binomialeChangeStats(binomialeInput.value);
         }, false);
+
     }
 
     function countCard(x) {
@@ -315,18 +310,24 @@ const Game = (function () {
         drawStatsBernouilli();
     }
 
-    function binomialeChangeStats(binomialeVariable) {
-        i = 0;
-        for (var key in stats) {
-            probaBinomiale(binomialeVariable, this.deck.length, i) * 100;
-            i++;
+    function binomialeApplication(binomialeVariable) {
+        let b = binomiale(binomialeVariable, Object.keys(eventTab).length, 1);
+        if ((Math.floor(b * 10) >= 0) && Math.floor(b * 10) <= 2) {
+            this.playerMoney.innerHTML = Object.values(eventTab)[Math.floor(b * 10)];
+            document.getElementById('player-money-message').getElementsByTagName("span")[0].innerHTML = Object.keys(eventTab)[Math.floor(b * 10)];
         }
+    }
+
+    function binomialeChangeStats(binomialeVariable) {
+        binomialeApplication(binomialeVariable)
         drawStatsBinomiale();
     }
 
     function drawStatsBinomiale() {
-        esperance = (this.deck.length * binomialeInput.value / 10);
-        variance = (this.deck.length * binomialeInput.value / 10 * (1 - binomialeInput.value / 10));
+        let esperance = (binomialeInput.value * Object.keys(eventTab).length);
+        let variance = (Object.keys(eventTab).length * binomialeInput.value * (1 - binomialeInput.value));
+        // param
+        document.getElementById("param").getElementsByTagName("span")[0].innerHTML = binomialeParameterValue.innerHTML;
         // Esperance
         document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = esperance;
         // Variance
@@ -426,6 +427,7 @@ const Game = (function () {
             this.loose++;
             this.gameEnded('You loose!');
         }
+
     }
 
     /*

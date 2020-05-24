@@ -1,12 +1,10 @@
-const eventTab = ["Due to the stock market spit, you only start with 50 coins...",
-    "Wow! You're lucky a millionaire left you 1,000 coins.",
-    "You seem nice, you can start with 500 coins."
-]
+const eventTab = {
+    "Due to the stock market spit, you only start with 50 coins...": 50,
+    "Wow! You're lucky : a millionaire left you 1,000 coins.": 1000,
+    "You seem nice, you can start with 500 coins.": 500
+}
 
 bernouilliParameter = 0.5;
-
-//n = eventTab.size()
-//p : proba chosen
 
 function bernoulli(p) {
     const t = Math.random(); // return a pseudo random number between [0,1]
@@ -18,20 +16,12 @@ function bernoulli(p) {
     return false;
 }
 
-function binomialCoef(n, k) {
-    if ((typeof n !== 'number') || (typeof k !== 'number'))
-        return false;
-    var coeff = 1;
-    for (var x = n - k + 1; x <= n; x++) coeff *= x;
-    for (x = 1; x <= k; x++) coeff /= x;
-    return coeff;
-}
-
-
-function probaBinomiale(p, n, k) {
-    nk = binomialCoef(n, k);
-    proba = nk * Math.pow(p, k) * Math.pow((1 - p), n - k);
-    return proba;
+//p = success proba
+//n = nb experience
+// k = success
+function binomiale(p, n, k) {
+    nk = combination(n, k);
+    return nk * Math.pow(p, k) * Math.pow((1 - p), n - k);
 }
 
 // Standard Normal distribution between 0 and 1 using Box-Muller transform 
