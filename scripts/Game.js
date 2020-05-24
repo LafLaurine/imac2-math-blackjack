@@ -337,8 +337,10 @@ const Game = (function () {
     function chooseMartingale() {
         if (uniforme(0, 2, 0, 1) >= 0.5) {
             applyMartingale("Alembert");
-        } else {
+        } else if (uniforme(0, 2, 0, 1) <= 0.2) {
             applyMartingale("Contre Alembert");
+        } else {
+            applyMartingale("Paroli");
         }
     }
 
@@ -353,8 +355,15 @@ const Game = (function () {
             if (winning)
                 this.playerStake.value = parseInt(this.playerStake.value) + 100;
             else {
-                if (parseInt(this.playerStake.value - 100) > 0)
-                    this.playerStake.value = parseInt(this.playerStake.value) - 100;
+                this.playerStake.value = parseInt(this.playerStake.value) - 100;
+            }
+        } else if (str === "Paroli") {
+            let firstStake = parseInt(this.playerStake.value);
+            if (winning)
+                this.playerStake.value = parseInt(this.playerStake.value) * 2;
+            //here we simulate a paroli of 2 (continue with the start stake if we won 4 times)
+            if (this.win === 4) {
+                this.playerStake.value = firstStake;
             }
         }
     }
