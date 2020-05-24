@@ -2,6 +2,7 @@ const Game = (function () {
 
     let deck;
     let binomialeParameterValue;
+    let gamePlayed = 0;
     /*
         32 cards button event handler
     */
@@ -369,8 +370,10 @@ const Game = (function () {
         }
     }
 
-    function getSum(total, num) {
-        return total + num;
+    function applyPoisson(k, lambda) {
+        if (poisson(gamePlayed, 10 / 3) >= 0.2) {
+            localStorage.getItem('difficulty') = "normal";
+        }
     }
 
     /*
@@ -388,6 +391,7 @@ const Game = (function () {
         //deal two cards to player
         this.player = new Player('player', [deck.draw(), deck.draw()]);
         this.numberCardHand = this.player.hand.length;
+        gamePlayed += 1;
         this.numberCardDealer = this.dealer.hand.length;
         let hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
         if (this.numberCard === 52) {
@@ -462,6 +466,7 @@ const Game = (function () {
         document.getElementById("loose").getElementsByTagName("span")[0].innerHTML = this.loose;
         chooseMartingale();
         this.playerStake.innerHTML = this.playerStake;
+        applyPoisson(gamePlayed, 10 / 3);
     }
 
     /*
