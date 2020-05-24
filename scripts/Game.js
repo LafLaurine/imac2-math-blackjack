@@ -76,79 +76,54 @@ const Game = (function () {
 
         //deals a card to the dealer until
         //one of the conditions below is true
-        while (true) {
-            let card = deck.deck.pop();
-            if (localStorage.getItem('difficulty') === 'easy') {
-
-                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
-                    let t = Math.random();
-                    if (t > 7) {
-                        this.dealer.hit(card);
-                    }
-                } else if (this.dealer.getScore() < 17) {
-                    this.dealer.hit(card);
-                }
+        let card = new Card();
+        let t = normalDistribution();
+        let limit;
+        if (localStorage.getItem('difficulty') === 'easy') {
+            limit = 20;
+        } else if (localStorage.getItem('difficulty') === 'normal') {
+            if (t > 0.2) {
+                limit = 17;
             }
-
-            if (localStorage.getItem('difficulty') === 'normal') {
-
-                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
-                    let t = Math.random();
-                    if (t > 5) {
-                        this.dealer.hit(card);
-                    }
-                } else if (this.dealer.getScore() < 17) {
-                    this.dealer.hit(card);
-                }
+        } else if (localStorage.getItem('difficulty') === 'hard') {
+            limit = 21;
+        }
+        while (this.dealer.getScore() < limit) {
+            if (this.inequal === false) {
+                card = deck.draw();
+            } else if (this.inequal === true) {
+                card = deck.drawInequal();
             }
-
-            if (localStorage.getItem('difficulty') === 'normal') {
-
-                if (this.dealer.getScore() >= 14 && this.dealer.getScore() <= 17) {
-                    let t = Math.random();
-                    if (t > 4) {
-                        this.dealer.hit(card);
-                    }
-                } else if (this.dealer.getScore() < 17) {
-                    this.dealer.hit(card);
-                }
-            }
-
+            this.dealer.hit(card);
             document.getElementById(this.dealer.element).innerHTML += card.view();
             this.dealerScore.innerHTML = this.dealer.getScore();
+        }
+        const playerBlackjack = this.player.getScore() == 21,
+            dealerBlackjack = this.dealer.getScore() == 21;
 
-            let playerBlackjack = this.player.getScore() == 21,
-                dealerBlackjack = this.dealer.getScore() == 21;
-
-            //Rule set
-            if (dealerBlackjack && !playerBlackjack) {
-                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) - parseInt(this.playerStake.value);
-                this.loose++;
-                this.gameEnded('You lost!');
-                break;
-            } else if (dealerBlackjack && playerBlackjack) {
-                this.loose++;
-                this.gameEnded('Draw!');
-                break;
-            } else if (!dealerBlackjack && playerBlackjack) {
-                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 3);
-                this.win++;
-                this.gameEnded('You won!');
-                break;
-            } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
-                this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
-                this.win++;
-                this.gameEnded('You won!');
-                break;
-            } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
-                this.loose++;
-                this.gameEnded('You lost!');
-                break;
-            } else if (this.playerMoney.textContent == 0) {
-                this.loose++;
-                this.gameEnded('You loose!');
-                break;
-            }
+        //Rule set
+        if (dealerBlackjack && !playerBlackjack) {
+            this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) - parseInt(this.playerStake.value);
+            this.loose++;
+            this.gameEnded('You lost!');
+        } else if (dealerBlackjack && playerBlackjack) {
+            this.loose++;
+            this.gameEnded('Draw!');
+        } else if (!dealerBlackjack && playerBlackjack) {
+            this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
+            this.win++;
+            this.gameEnded('You won !');
+        } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
+            this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
+            this.win++;
+            this.gameEnded('You won!');
+        } else if (this.dealer.getScore() < 21 && this.player.getScore() <= 21) {
+            this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
+            this.win++;
+            this.gameEnded('You win !');
+        } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
+            this.loose++;
+            this.gameEnded('You lost!');
         }
     }
 
@@ -406,6 +381,11 @@ const Game = (function () {
         }
         this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
         this.setMessage("Hit or Stand");
+
+        if (this.playerMoney.textContent == 0) {
+            this.loose++;
+            this.gameEnded('You loose!');
+        }
     }
 
     /*

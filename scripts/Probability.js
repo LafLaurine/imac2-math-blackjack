@@ -34,19 +34,17 @@ function probaBinomiale(p, n, k) {
     return proba;
 }
 
-function gaussianRandom() {
-    var r1, r2, w, X1;
-
-    do {
-        r1 = 2 * Math.random() - 1;
-        r2 = 2 * Math.random() - 1;
-        w = r1 * r1 + r2 * r2;
-    } while (w >= 1);
-
-    w = Math.sqrt((-2 * Math.log(w)) / w);
-
-    X1 = r1 * w;
-    return X1;
+// Standard Normal distribution between 0 and 1 using Box-Muller transform 
+// resamples the values if it's more than 3.6 standard deviations away (less than 0.02% chance).
+function normalDistribution() {
+    let u = 0,
+        v = 0;
+    while (u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while (v === 0) v = Math.random();
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) return randn_bm(); // resample between 0 and 1
+    return num;
 }
 
 // Si X suit une loi uniforme sur [a;b]

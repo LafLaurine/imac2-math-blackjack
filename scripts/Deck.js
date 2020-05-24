@@ -64,6 +64,7 @@ class Deck {
 			return item.rank;
 		}).indexOf(card.rank));
 		this.deck.splice(index, 1);
+		console.log(card)
 		return card;
 	}
 
