@@ -311,6 +311,7 @@ const Game = (function () {
     }
 
     function binomialeApplication(binomialeVariable) {
+        document.getElementById('player-money').getElementsByTagName("span")[0].innerHTML = 500;
         let b = binomiale(binomialeVariable, Object.keys(eventTab).length, 1);
         if ((Math.floor(b * 10) >= 0) && Math.floor(b * 10) <= 2) {
             this.playerMoney.innerHTML = Object.values(eventTab)[Math.floor(b * 10)];
@@ -324,8 +325,8 @@ const Game = (function () {
     }
 
     function drawStatsBinomiale() {
-        let esperance = (binomialeInput.value * Object.keys(eventTab).length);
-        let variance = (Object.keys(eventTab).length * binomialeInput.value * (1 - binomialeInput.value));
+        let esperance = (binomialeInput.value * Object.keys(eventTab).length).toFixed(2);
+        let variance = (Object.keys(eventTab).length * binomialeInput.value * (1 - binomialeInput.value)).toFixed(2);
         // param
         document.getElementById("param").getElementsByTagName("span")[0].innerHTML = binomialeParameterValue.innerHTML;
         // Esperance
@@ -366,6 +367,10 @@ const Game = (function () {
                 this.playerStake.value = firstStake;
             }
         }
+    }
+
+    function getSum(total, num) {
+        return total + num;
     }
 
     /*
@@ -436,6 +441,8 @@ const Game = (function () {
             this.loose++;
             this.gameEnded('You loose!');
         }
+        document.querySelector('#bernouilliInput').disabled = true;
+        document.querySelector('#binomialeInput').disabled = true;
 
     }
 

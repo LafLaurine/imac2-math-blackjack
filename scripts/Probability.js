@@ -87,9 +87,7 @@ function poisson(k, lambda) {
     return ((A * L) / factorial(k))
 }
 
-
-// calcul de la moyenne d'un tableau
-function moyenne(data) {
+function mean(data) {
     var sum = data.reduce(function (sum, value) {
         return sum + value;
     }, 0);
@@ -99,13 +97,13 @@ function moyenne(data) {
 }
 
 function ecartType(values) {
-    var avg = moyenne(values);
+    var avg = mean(values);
     var squareDiffs = values.map(function (value) {
         var diff = value - avg;
         var sqrDiff = diff * diff;
         return sqrDiff;
     });
-    var avgSquareDiff = moyenne(squareDiffs);
+    var avgSquareDiff = mean(squareDiffs);
     var stdDev = Math.sqrt(avgSquareDiff);
     return stdDev;
 }
@@ -115,7 +113,7 @@ function ecartMoyen(data) {
     var elem = [];
     var b = data.length;
     var final;
-    var avg = moyenne(data);
+    var avg = mean(data);
     for (i = 0; i < b; i++) {
         elem.push(Math.abs(data[i] - avg));
     }
