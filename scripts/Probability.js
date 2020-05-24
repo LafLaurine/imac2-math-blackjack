@@ -47,17 +47,8 @@ function normalDistribution() {
     return num;
 }
 
-// Si X suit une loi uniforme sur [a;b]
-// La probabilité de P(c≤X≤d)
 function uniforme(a, b, c, d) {
     return ((d - c) / (b - a));
-}
-
-
-
-//DO SOMETHING
-function uniformeApplication(a, b, c, d) {
-    if (uniforme(a, b, c, d) < 0.5) {}
 }
 
 function factorial(k) {

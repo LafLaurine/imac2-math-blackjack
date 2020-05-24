@@ -25,6 +25,7 @@ const Game = (function () {
         this.startButton.disabled = true;
         this.hitButton.disabled = false;
         this.standButton.disabled = false;
+        document.getElementById('stake').disabled = true;
     }
 
     /*
@@ -105,24 +106,36 @@ const Game = (function () {
         if (dealerBlackjack && !playerBlackjack) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) - parseInt(this.playerStake.value);
             this.loose++;
+            this.loosing = true;
+            this.winning = false;
             this.gameEnded('You lost!');
         } else if (dealerBlackjack && playerBlackjack) {
             this.loose++;
+            this.loosing = true;
+            this.winning = false;
             this.gameEnded('Draw!');
         } else if (!dealerBlackjack && playerBlackjack) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
+            this.loosing = false;
+            this.winning = true;
             this.gameEnded('You won !');
         } else if (this.dealer.getScore() > 21 && this.player.getScore() <= 21) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
+            this.loosing = false;
+            this.winning = true;
             this.gameEnded('You won!');
         } else if (this.dealer.getScore() < 21 && this.player.getScore() <= 21) {
             this.playerMoney.innerHTML = parseInt(this.playerMoney.textContent) + parseInt(this.playerStake.value * 2);
             this.win++;
+            this.loosing = false;
+            this.winning = true;
             this.gameEnded('You win !');
         } else if (this.dealer.getScore() > this.player.getScore() && this.dealer.getScore() <= 21 && this.player.getScore() < 21) {
             this.loose++;
+            this.loosing = true;
+            this.winning = false;
             this.gameEnded('You lost!');
         }
     }
@@ -165,7 +178,9 @@ const Game = (function () {
     */
     this.init = function () {
         this.win = 0;
+        this.winning = false;
         this.loose = 0;
+        this.loosing = false;
         this.dealerScore = document.getElementById('dealer-score').getElementsByTagName("span")[0];
         this.playerScore = document.getElementById('player-score').getElementsByTagName("span")[0];
         this.playerMoney = document.getElementById('player-money').getElementsByTagName("span")[0];
@@ -318,6 +333,31 @@ const Game = (function () {
         document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = variance;
     }
 
+    function chooseMartingale() {
+        if (uniforme(0, 2, 0, 1) >= 0.5) {
+            applyMartingale("Alembert");
+        } else {
+            applyMartingale("Contre Alembert");
+        }
+    }
+
+    function applyMartingale(str) {
+        if (str === "Alembert") {
+            if (winning) {
+                if (parseInt(this.playerStake.value) - 100 > 0)
+                    this.playerStake.value = parseInt(this.playerStake.value) - 100;
+            } else
+                this.playerStake.value = parseInt(this.playerStake.value) + 100;
+        } else if (str === "Contre Alembert") {
+            if (winning)
+                this.playerStake.value = parseInt(this.playerStake.value) + 100;
+            else {
+                if (parseInt(this.playerStake.value - 100) > 0)
+                    this.playerStake.value = parseInt(this.playerStake.value) - 100;
+            }
+        }
+    }
+
     /*
         Start the game
     */
@@ -402,6 +442,8 @@ const Game = (function () {
         this.standButton.disabled = true;
         document.getElementById("win").getElementsByTagName("span")[0].innerHTML = this.win;
         document.getElementById("loose").getElementsByTagName("span")[0].innerHTML = this.loose;
+        chooseMartingale();
+        this.playerStake.innerHTML = this.playerStake;
     }
 
     /*

@@ -64,7 +64,6 @@ class Deck {
 			return item.rank;
 		}).indexOf(card.rank));
 		this.deck.splice(index, 1);
-		console.log(card)
 		return card;
 	}
 
@@ -75,6 +74,7 @@ class Deck {
 		}
 	}
 
+	//random with weight
 	chooseWeighted(deck, prob) {
 		var sum = prob.reduce((acc, el) => acc + el, 0);
 		var acc = 0;
