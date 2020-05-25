@@ -1,0 +1,304 @@
+\documentclass[12pt]{report}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[latin1]{inputenc}
+
+\title{Projet de probabilité et statistique}
+\author{LAFONTAINE Laurine - SÉGUY Margaux}
+\date{IMAC 2021}
+
+\begin{document}
+\maketitle
+
+\chapter{Descriptif du projet}
+
+\section{Le jeu du blackjack}
+
+Le blackjack est un jeu régi par la loi hypergéométrique, puisque l'on extrait au hasard un échantillon de n éléments, tirage exhaustif de n éléments (c'est à dire n tirages sans remise).
+La loi hypergéométrique de paramètres associés n, p et A est une loi de probabilité discrète. Parmi les n objet tirés, k sont souhaités et n - k ne le sont pas. Il y a ${C_{k}^{m}}$ façons de constituer des lots de k objets parmi les m présentant le caractère étudié et ${C_{n-k}^{N-m}}$ façons de choisir les autres. Le nombre de cas possibles est ${C_{N}^{n}}$. Finalement, la loi de probabilité est fournie par la formule :
+$${P(X=k) = \frac{C_{k}^{m} * {C_{n-k}^{N-m}}}{ {C_{N}^{n}} }}$$
+
+Si on ne descend pas au niveau de la main, mais que l'on reste au niveau du sabot, chaque sabot étant indépendant du prochain, on peut approximer le jeu avec une loi binomiale. Le jeu est constitué d'une suite de manches indépendantes les unes des autres où le joueur gagne ou perd, on suit toujours la même loi. A chaque manche, le joueur touche un gain positif ou négatif aléatoire. On notera ${Ca}$ la cagnotte du jeu. On peut considérer le hit (lorsque l'utilisateur pioche une carte) comme la variable de temps. A chaque hit, on considère un nouveau cycle, pour lequel les probabilités de jeu changent. 
+
+\section{Les composantes aléatoires du jeu}
+
+Composante 1 : Sabot (les paquets de cartes)
+Espace d'état : Tirage de paquet et des cartes
+Paramètre : Plus ou moins de chance de tomber sur un paquet équilibré ou non, ce qui engendre plus ou moins de chance de gagner une partie. 
+
+Composante 2 : La difficulté
+Espace d'état : Difficulté et tirage des cartes
+Paramètre : Plus ou moins de chance d'avoir un jeu difficile avec le comportement du dealer différent en fonction de la difficulté.
+
+Composante 3 : Comportement du joueur
+Espace d'état : Les martingales qui permettent de modéliser le comportement du joueur concernant sa mise
+Paramètre : Mise du joueur plus ou moins grande en fonction des parties gagnées et de la martingale appliquée 
+
+Composante 4 : Argent de départ
+Espace d'état : Argent du joueur 
+Paramètre : Plus ou moins d'argent en fonction de l'événement de départ
+
+Composante 5 : Comportement du dealer
+Espace d'état : Jeu du dealer
+Paramètre : Plus ou moins de chance de gagner face au comportement du dealer 
+
+Structure de corrélation : Les cartes que le joueur peut piocher dépendent du paquet de cartes initial. Pareil pour la pioche du croupier. Les actions du joueur et du dealer modifient les probabilités en jeu.
+La difficulté change aussi la configuration de tout le jeu. Il en est de même pour les martingales, qui agissent sur la mise du joueur et qui peuvent le faire perdre tout son argent plus ou moins rapidement (de même avec l'évenement de départ qui offre plus ou moins d'argent).
+Le fait que le joueur gagne sa partie dépend donc de plusieurs facteurs différents.
+
+
+\chapter{Les variables aléatoires et la probabilité au sein du blackjack}
+
+\section{Début de jeu}
+Soit un paquet de 52 cartes ou de 32 cartes. 
+Un paquet de 32 cartes contient AS, 7, 8, 9, 10, J, D, R. Les paquets sont choisis au grâce à un tirage de Bernoulli. Entre autre, le nombre de cartes différents, il existe aussi deux types de paquet. Soit un paquet est équilibré et alors il est normalement constitué. Soit un paquet est truqué et le paquet n'est pas équiprobable.
+
+On considère la répartition des cartes truquées suivantes : 5/52 pour l'AS de coeur et donc 47/52 pour le reste des cartes : au lieu de 4/52 chacunes des 13 cartes.
+
+Pour le paquet non truqué, chaque carte a environ 1.9${\%}$ de chance d'être tirée.
+
+On note P(blackjack) la probabilité de gagner au Blackjack dès le début de la partie, lorsque le joueur reçoit ses deux premières cartes.
+L'événement possible est donc d'avoir un as (qui vaut 11 points quand le score est inférieur à 11, sinon 1) + une tête(valet, dame, roi) ou un dix car ces cartes valent 10 points.
+
+La probabilité de l'événement blackjack "obtenir un blackjack dès les premières cartes", est noté P(blackjack) et correspond au rapport : ${P(blackjack) =} \frac{nb_{issues favorables}}{nb_{issues}}$. 
+
+JEU EQUILIBRÉ : 
+
+Le jeu étant dispersé de manière équiprobable, on peut utiliser le combinatoire.
+
+Pour 52 cartes : 
+\begin{itemize}
+  \item Le nombre d'issues possibles de ce jeu est ${C_{2}^{52}}$
+  \item Le nombre d'issues favorables est ${C_{1}^{4}}$ (1 as parmi les 4 possibilités : 1 carte as * 4 déclinaisons) et ${C_{1}^{16}}$ (le nombre de têtes possibles = 4 * 4 cartes par couleurs = 16)
+  \item On a donc ${P(blackjack)} = \frac{C_{1}^{4} {C_{1}^{16}}}{{C_{2}^{52}}} = \frac {64}{1326} = \frac{32}{663} = 0,05$
+  \item Autrement dit, on a ${P(blackjack)} = \frac{4}{52} * \frac{16}{51} + \frac{16}{52} * \frac{4}{51} $
+\end{itemize}
+
+Pour 32 cartes : 
+\begin{itemize}
+  \item Le nombre d'issues possibles de ce jeu est ${C_{2}^{32}}$
+  \item Le nombre d'issues favorables est ${C_{1}^{4}}$ et ${C_{1}^{16}}$
+  \item On a donc ${P(blackjack)} = \frac{C_{1}^{4} {C_{1}^{16}}}{{C_{2}^{32}}} = \frac {64}{496} = \frac{4}{31} = 0,13$
+\end{itemize}
+
+JEU DÉSÉQUILIBRÉ : 
+
+Le jeu n'étant pas aléatoire, il faut faire attention entre l'événement "tirer l'as de coeur en premier puis une tête" et "tirer un as autre que l'as de coeur puis une tête".
+
+Soit C, l'événemement "Tirer une carte autre que l'As de coeur"
+
+Pour 52 cartes : 
+
+ ${P(Acoeur)} = 10\% \hfill \break \break$
+ ${\overline{P(Acoeur)} = 100 - 10 = 90\%} \hfill \break \break$
+ ${{P(C)} = \frac{90}{51} = 1.76\%}$
+ 
+ On peut donc maintenant calculer la probabilité d'obtenir 3 As (as de pique, trèfle et carreau) : $\hfill \break$
+ ${{P(As restants)} = 1.76 * 3 = 5.3\%}$
+ 
+  On peut donc maintenant calculer la probabilité d'obtenir n'importe quel As : $\hfill \break$
+ ${{P(As)} = 5.3 + 10 = 15.3\%}$
+ 
+ Il nous reste à calculer la probabilité d'obtenir une tête : $\break$
+ ${{P(tête)} = 1.76 * 4 * 4 = 28.2\%}$
+ 
+\begin{itemize}
+  \item Soit l'AS de coeur n'est pas tiré 
+  \item On a donc ${P(blackjack)} = \frac{15.3}{52} * {28.2} + \frac{90}{52} * 16 * \frac{15.3}{51} = 0.3 * 28.2 + 27.7 * 0.3 = 16.8 \%$
+  \item Soit l'AS de coeur est tiré en première carte
+  \item On a donc ${P(blackjack)} = \frac{15.3}{52} * {\frac{100*51}{51*90}*16} + \frac{90}{52} * 16 * \frac{15.3}{51} = 8.31 + 5.28 = 13.6\%$
+\end{itemize}
+
+
+Pour 32 cartes : 
+
+
+ ${P(Acoeur)} = 10\% \hfill \break \break$
+ ${\overline{P(Acoeur)} = 100 - 10 = 90\%} \hfill \break \break$
+ ${{P(C)} = \frac{90}{31} = 2.9\%}$
+ 
+ On peut donc maintenant calculer la probabilité d'obtenir 3 As (as de pique, trèfle et carreau) : $\hfill \break$
+ ${{P(As restants)} = 2.9 * 3 = 8.7\%}$
+ 
+  On peut donc maintenant calculer la probabilité d'obtenir n'importe quel As : $\hfill \break$
+ ${{P(As)} = 8.7 + 10 = 18.7\%}$
+ 
+ Il nous reste à calculer la probabilité d'obtenir une tête : $\break$
+ ${{P(tête)} = 2.9 * 4 * 4 = 46.4\%}$
+ 
+ 
+\begin{itemize}
+  \item Soit l'AS de coeur n'est pas tiré 
+  \item On a donc ${P(blackjack)} = \frac{18.7}{32} * {46.4} + \frac{90}{32} * 16 * \frac{18.7}{31} =  27.1 + 0.6 = 27.7 \%$
+  \item Soit l'AS de coeur est tiré en première carte
+  \item On a donc ${P(blackjack)} = \frac{18.7}{32} * {\frac{100*31}{31*90}*16} + \frac{90}{32} * 16 * \frac{18.7}{31} =  10.29 + 9.05 = 19.34\%$
+\end{itemize}
+
+
+Le joueur a donc une probabilité de 0,05 de gagner dès le début si l'on commence avec un jeu de 52 cartes équilibré (ce qu'il se passe en temps normal au casino). Ce qui correspond à une fois toutes les 20 mains, pour donner un ordre d'idée. Dans les vraies conditions du casino, le blackjack est un des jeux les moins avantageux pour le joueur.
+
+On voit que la meilleure chance de gagner dès le début est attribué au jeu déséquilibré de 32 cartes.
+
+\section{Probabilité blackjack prochaine carte}
+La seule façon d'obtenir un blackjack au prochain hit est d'avoir un score de 10 et de tirer un AS. Sinon, l'obtention du blackjack se fait en plusieurs fois.
+
+Au hit, on vérifie donc à chaque fois si le joueur a un score de 10. Si c'est le cas, ${P(blackjack)} = \frac{C_{1}^{4} }{{C_{nombre de carte dans la main}^{nb carte du paquet - nombre de carte dans la main }}}$ paquet équilibré
+
+Au hit, on vérifie donc à chaque fois si le joueur a un score de 10. Si c'est le cas, ${P(blackjack)} = \frac{C_{1}^{13} }{{C_{nombre de carte dans la main}^{nb carte du paquet - nombre de carte dans la main }}}$ paquet déséquilibré
+
+Sinon, la probabilité est de 0 puisque l'événement est impossible.
+
+\section{Chance du croupier}
+Notre croupier est automatisé. Celui-ci est obligé de piocher des cartes jusqu'à obtenir la limite définie dans la difficulté. En difficulté normale, cette limite est à 17 (règle normal du blackjack pour que le croupier ait une chance de gagner). Jusqu'à obtenir un score de 17, il est obligé de piocher. 
+
+En utilisant les transformations de Box Muller, on effectue une distribution normale. Si celle-ci est supérieure à 0.2, on applique la limite de 17, sinon une limite random entre 14 et 17.
+
+\section{Difficulté du jeu}
+Au début du jeu, le joueur peut choisir plusieurs difficultés. La difficulté "facile" est celle exposée sur la section d'avant, le croupier a 20\% de chance de tirer un carte et 80\% de ne rien faire. Honnêtement, si le joueur a de la chance et tombe sur le deck déséquilibré, s'il vérifie bien son score, il peut facilement gagner. 
+
+La limite de tirage en mode normal est à 17 et en mode difficile à 16.
+
+En jeu facile, le joueur à 10\% de chance d'otenir un As de coeur avec le paquet déséquilibré.
+En jeu difficile, le joueur à 4\% de chance d'obtenir un As quelconque.
+
+A chaque fin de jeu, on applique une loi de Poisson de paramètre $k = nombre de parties jouées$ et $\lambda = 10/3$. Si cette probabilité est supérieure à 0.2, alors on passe à la difficulté normale.
+
+\section{Martingale}
+
+Une martingale est une technique dont le but est d'augmenter les chances de gain aux jeux de hasard tout en respectant les règles de jeu. 
+Défintion : Soit un processus adapté (Xn,Fn) tel que Xn est intégrable pour tout entier n. On dit que le processus est
+une martingale si ${\forall 0\leq m \leq n, E(Xn|Fm)=Xm }$. Si $Xn$ représente la fortune du joueur à l'instant n, dire que la suite $(Xn)$ est une martingale signifie que la connaissance des parties passées (c'est-à-dire la connaissance des événements de Fm) ne donne pas d'avantages pour les parties à venir.
+
+Ici, on a implémenté trois martingales différentes : 
+\begin{itemsize}
+\item - La pyramide d'Alembert : Augmenter la mise d'une unité après une perte et diminuer la mise d'une unité après un gain.
+\item - La contre d'Alembert :  Diminuer la mise d'une unité après une perte et augmenter la mise d'une unité après un gain.
+\item - Le paroli de 2 : Doubler la mise à chaque gain, puis, à partir d'un nombre de 4 gains, s'arrêter et recommencer avec la mise de départ
+\end{itemsize}
+
+On effectue un tirage uniforme de où X est une variable aléatoire suivant une loi uniforme sur l'intervalle [0;3]. On effectue un tirage sur l'intervalle [0;1]
+$$P(c \leq X \leq d) = \frac {d - c}{b - a}$$
+
+Si le tirage est entre 0 et 0.3 alors on effectue la martingale d'Alembert, si le tirage est entre 0.2 et 0.5 alors on effectue la contre d'Alembert, sinon la paroli de 2.
+
+
+\section{Retour espéré}
+Le retour espéré est un pourcentage attribué à chaque jeu qui définit la somme que doit reverser obligatoirement le casino aux joueurs, en fonction des mises. 
+Parier un montant moindre à chaque fois ne change pas les chances de gagner une seule main, mais cela réduit la variation du retour espéré. En d'autres termes, la probabilité que vous vous retrouviez dans le positif diminue avec le temps de jeu.
+
+Comment calcule-t-on le retour espéré ?
+
+${Retour espéré } = {P(1-P(blackjack)) * mise perdue} - {P(blackjack) * mise gagné}$
+
+\section{Probabilité de la bonne main}
+
+Au blackjack, une bonne main est le fait de démarrer avec 21, 20, 19 ou 18 points (en seulement deux cartes donc).
+En début de jeu, on peut calculer la probabilité que le joueur démarre avec une bonne main. 
+
+
+JEU EQUILIBRE 
+
+Pour 52 et 32 cartes on a : 
+
+Pour 21 points (le cas Blackjack), nous avons déjà calculé la probabilité qui est de 5 \% pour 52 cartes et 13\% pour 32 cartes. 
+
+Pour 20 points, les cas possibles sont : un AS et un 9. Ou deux têtes. On a donc ${P(20 points)} = \frac{C_{1}^{4} {C_{1}^{4} } + {C_{2}^{16} }}{{C_{2}^{nbCarte}}} $
+
+Pour 19 points, les cas possible sont : une tête et un neuf; un AS et un 8. On a donc ${P(19 points)} = \frac{C_{2}^{4} + {C_{1}^{16}}{C_{1}^{4}}}{{C_{2}^{nbCarte}}}$
+
+Pour 18 points, les cas possible sont : une tête et un 8; un AS et un 7; deux 9. On a donc ${P(18 points)} = \frac{C_{2}^{4} + {C_{1}^{16}}{C_{1}^{4 } + C_{2}^{4}}}{{C_{2}^{nbCarte}}}$
+
+Pour la bonne main totale : 
+ ${P(bonne main)} = P(21 points) + P(20 points) + P(19 points) + P(18 points) $
+ 
+ 
+JEU DESEQUILIBRE
+Pour 52 et 32 cartes  
+
+
+Pour 21 points (le cas Blackjack), nous avons déjà calculé la probabilité qui est de 16.8 si As de coeur pas tiré et 11.5 si As de coeur tiré pour 52 cartes.
+Pour 32 cartes : 
+27.7\% si As de coeur pas tiré et 27.4\% si As de coeur tiré. 
+
+Pour 20 points, les cas possibles sont : un AS et un 9. Ou deux têtes. On a donc ${P(20 points)} = \frac{P(As)}{nbCarte} * \frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4 * \frac{P(As)}{nbCarte-1}$
+
+As coeur tiré : 
+${P(20 points)} = \frac{P(As)}{nbCarte} * \frac{90}{nbCarte-1}*4 + \frac{100}{nbCarte}*4 * \frac{P(As)}{nbCarte-1}$
+
+Pour 19 points, les cas possible sont : une tête et un neuf; un AS et un 8. On a donc ${P(19 points)} = \frac{90}{nbCarte} * 4 * \frac{90}{nbCarte-1} * 4 * \frac{90}{nbCarte} * 4 * \frac{90}{nbCarte-1} * 4 + (\frac{P(As)}{nbCarte} * \frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4 *\frac{P(As)}{nbCarte-1}$
+
+As coeur tiré : 
+
+${P(19 points)} = \frac{90}{nbCarte} * 4 * \frac{90}{nbCarte-1} * 4 * \frac{90}{nbCarte} * 4 * \frac{90}{nbCarte-1} * 4 + (\frac{P(As)}{nbCarte} * \frac{90}{nbCarte-1}*4 + \frac{100}{nbCarte}*4 *\frac{P(As)}{nbCarte-1}$
+
+
+Pour 18 points, les cas possible sont : une tête et un 8; un AS et un 7; deux 9. On a donc ${P(18 points)} = \frac{90}{nbCarte}*4 * \frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4 + \frac{P(As)}{nbCarte}\frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4\frac{P(As)}{nbCarte-1} + 
+\frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4$
+
+As coeur tiré : 
+${P(18 points)} = \frac{90}{nbCarte}*4 * \frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4 + \frac{P(As)}{nbCarte}\frac{90}{nbCarte-1}*4 + \frac{100}{nbCarte}*4\frac{P(As)}{nbCarte-1} + 
+\frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4 + \frac{90}{nbCarte}*4\frac{90}{nbCarte-1}*4$
+
+Pour la bonne main totale : 
+ ${P(bonne main)} = P(21 points) + P(20 points) + P(19 points) + P(18 points) $ 
+ 
+ 
+\section{Probabilité de la prochaine carte}
+Dans le blackjack de 52 cartes ou 32 cartes, on a 1 as et 4 cartes allant de 10 à Roi (on rappelle que chaque carte est décliné en 4 couleurs) ce qui fait en vérité 4 as et 16 têtes. 
+
+Le joueur peut entrer la valeur de la carte dont il aimerait savoir la probabilité pour le prochain tirage. 
+La formule de probabilité pour obtenir une certaine valeur favorable dépend du nombre de jeux de cartes utilisés. Si l'on indique par x une valeur favorable, par nx le nombre de cartes ayant la valeur x (de la main du joueur et du dealer) et par nv le nombre total de cartes, alors la probabilité que la prochaine carte du jeu ait la valeur x est :
+
+Pour le jeu équilibré : 
+\begin{itemize}
+  \item ${P(prochaine carte = x)} =  \frac{4-nx}{nombre de cartes total dans le paquet - nv} si x \neq 10 $ 
+  \item ${P(prochaine carte = x)} =  \frac{16-nx}{nombre de cartes total dans le paquet - nv} si x = 10 $ 
+\end{itemize}
+
+Pour le jeu déséquilibré : 
+\begin{itemize}
+\end{itemize}
+
+\section{Probabilité de brûler}
+Brûler (qu'on appelle bust) au blackjack signifie dépasser le 21. 
+On veut calculer la probabilité de bust à la prochaine carte donné (au prochain hit). 
+La formule utilisée est la suivante :  ${P(bust)} = \frac{nombre de carte qui peuvent faire brûler}{nombre de carte inconnue}$ 
+
+On s'explique : à chaque fois avant le hit, on vérifie le score du joueur. On soustrait 21 (le blackjack) à ce score. On obtient la limite à ne pas dépasser, i.e les valeurs de carte qu'il ne faut pas dépasser. Pour trouver le nombre de carte qui ferait dépasser la limite, on parcourt le deck du joueur et on vérifie à chaque carte si elle est supérieure ou non à la limite. Si c'est le cas, on ajoute 1 au compteur. A la fin du parcours, on aura donc le nombre de carte qui font brûler.
+
+Le nombre de carte inconnues est le nombre de carte contenue dans le paquet - le nombre de carte dans la main du joueur. 
+
+\section{Graphique du couple aléatoire et de la distribution des cartes}
+Pour le cas d'un couple aléatoire, on peut généraliser une loi de probabilité. Soit (X,Y), un couple de variable aléatoire et si l'on définit Z  = h(X,Y), la fonction de répartition de cette variable est obtenue en identifiant pour le couple (X,Y) un événement.
+Soit Z = X + Y avec ${X \perp Y}$ car X et Y ont la même distribution
+
+On cherche donc la distribution des valeurs obtenues avec les deux premières cartes si l'on veut obtenir la plus grosse somme (avec l'AS valant 11). Soit X et Y les valeurs respectives de la première et de la deuxième carte. Les valeurs possibles vont de 2 à 11 pour X et Y. Dans un jeu classique de 52 cartes, on a comme distribution : 
+
+${ p_z(4) = p_x(2) * p_y(2) = 1/169}$
+car ${ p_x(x) = 1/13}$ si ${2 \leq  x }$ ${\le 9}$ et $ {p_x(10) = 4/13}$ et ${p_x(11) = 1/13}$
+
+avec ce même principe, on calcule toutes les répartitions possibles jusqu'à la valeur 22 (deux AS). Cela donne le graphique que vous pouvez voir sur le site.
+
+\section{Risque de ruine}
+L'opposé du gain de la ${n^ème}$ manche constitue une perte ${X_n}$. On peut donc calculer la perte cumulée à la ${i^ème}$ manche. ${S_n = X_1 + X_2 + ... + X_n}$
+En mathématiques, on appelle la suite ${(S_1, S_2, ..., S_n)}$ la marche au hasard.
+
+On suppose que le joueur est compétant : l'espérance de gain à un manche est donc ${\nu > 0}$.
+On a donc comme espérance de perte ${E(X_1) = -\nu}$
+On peut donc calculer la variance sur le gain ou la perte : ${Var(X_1) = \sigma^2} > 0 $
+
+Ici, comme le jeu est hasardeux, à tout moment il peut y avoir une perte cumulée, qui va dépasser la cagnotte ${Ca}$. ${\exists}$ n tq ${S_n \geq Ca}$. Ce qui simule la ruine. 
+
+On suppose la perte ${X_n}$ composé d'une partie déterministe (pour le même argument renverra toujours le même résultat) ${-\nu}$ et de fluctuation aléatoire de la loi normale d'espérance 0 et de variance ${\sigma^2}$
+
+Puisque le jeu est en temps continu, on peut calculer la perte du joueur à un instant t. Celle-ci est composée d'une partie déterministe ${-\nu t}$ et de fluctuation cumulée ${\sigma W t}$ de la loi normale centrée, issue des manches aux instants ${S \le t}$ 
+
+Comme la variance d'une somme de variables indépendantes est la somme des variances, on demande que la variance de ${\sigma W t}$ soit ${\sigma^2 t}$ (cf mouvement brownien standard)
+
+On peut donc calculer le risque de perte comme suit : ${\exp({{\frac{-2 \nu Ca}{\sigma^2}})}}$
+
+${\sigma}$ étant l'espérance
+
+
+\end{document}

@@ -83,13 +83,23 @@ const Game = (function () {
         let t = normalDistribution();
         let limit;
         if (localStorage.getItem('difficulty') === 'easy') {
-            limit = 20;
+            if (t > 0.2) {
+                limit = 20;
+            } else {
+                limit = Math.floor(Math.random() * 20) + 16;
+            }
         } else if (localStorage.getItem('difficulty') === 'normal') {
             if (t > 0.2) {
                 limit = 17;
+            } else {
+                limit = Math.floor(Math.random() * 17) + 14;
             }
         } else if (localStorage.getItem('difficulty') === 'hard') {
-            limit = 21;
+            if (t > 0.2) {
+                limit = 16;
+            } else {
+                limit = Math.floor(Math.random() * 17) + 16;
+            }
         }
         while (this.dealer.getScore() < limit) {
             if (this.inequal === false) {
@@ -263,7 +273,9 @@ const Game = (function () {
                     return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
             //TODO 
-            else {}
+            else {
+                console.log("YES")
+            }
         } else {
             console.log("Card doesn't exist")
         }
@@ -337,9 +349,9 @@ const Game = (function () {
     }
 
     function chooseMartingale() {
-        if (uniforme(0, 2, 0, 1) >= 0.5) {
+        if (uniforme(0, 3, 0, 1) <= 0.3 > 0 && uniforme(0, 3, 0, 1) <= 0.3) {
             applyMartingale("Alembert");
-        } else if (uniforme(0, 2, 0, 1) <= 0.2) {
+        } else if (uniforme(0, 2, 0, 1) > 0.3 && uniforme(0, 2, 0, 1) <= 0.5) {
             applyMartingale("Contre Alembert");
         } else {
             applyMartingale("Paroli");
@@ -370,7 +382,7 @@ const Game = (function () {
         }
     }
 
-    function applyPoisson(k, lambda) {
+    function applyPoisson() {
         if (poisson(gamePlayed, 10 / 3) >= 0.2) {
             localStorage.getItem('difficulty') = "normal";
         }
@@ -466,7 +478,7 @@ const Game = (function () {
         document.getElementById("loose").getElementsByTagName("span")[0].innerHTML = this.loose;
         chooseMartingale();
         this.playerStake.innerHTML = this.playerStake;
-        applyPoisson(gamePlayed, 10 / 3);
+        applyPoisson();
     }
 
     /*
