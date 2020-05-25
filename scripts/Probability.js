@@ -4,8 +4,6 @@ const eventTab = {
     "You seem nice, you can start with 500 coins.": 500
 }
 
-bernouilliParameter = 0.5;
-
 function bernoulli(p) {
     const t = Math.random(); // return a pseudo random number between [0,1]
     if (t < p) {
@@ -75,57 +73,8 @@ function hypergeometric(k, n, g, t) {
     return combination(g, k) * combination((t - g), (n - k)) / combination(t, n);
 }
 
-//Poisson
-//cas limite de la loi binomiale pour lequel intervient le facteur temps 
-// loi de probabilité discrète qui décrit le comportement du nombre d'événements se produisant dans un intervalle de temps fixé
-// si ces événements se produisent avec une fréquence moyenne ou espérance connue et indépendamment du temps écoulé depuis l'événement précédent
-//lambda fois l'événement en moyenne par delta T
-//quelle est la proba de l'evt exactement k fois dans ce delta T ?
 function poisson(k, lambda) {
     let A = Math.pow(lambda, k);
     let L = Math.exp(-lambda);
     return ((A * L) / factorial(k))
-}
-
-function mean(data) {
-    var sum = data.reduce(function (sum, value) {
-        return sum + value;
-    }, 0);
-
-    var avg = sum / data.length;
-    return avg;
-}
-
-function ecartType(values) {
-    var avg = mean(values);
-    var squareDiffs = values.map(function (value) {
-        var diff = value - avg;
-        var sqrDiff = diff * diff;
-        return sqrDiff;
-    });
-    var avgSquareDiff = mean(squareDiffs);
-    var stdDev = Math.sqrt(avgSquareDiff);
-    return stdDev;
-}
-
-
-function ecartMoyen(data) {
-    var elem = [];
-    var b = data.length;
-    var final;
-    var avg = mean(data);
-    for (i = 0; i < b; i++) {
-        elem.push(Math.abs(data[i] - avg));
-    }
-    final = elem.reduce((f, g) => f + g, 0)
-    return final / b;
-}
-
-function drawStatsBernouilli() {
-    // Paramètre
-    document.getElementById("param").getElementsByTagName("span")[0].innerHTML = bernouilliParameter;
-    // Esperance
-    document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = bernouilliParameter;
-    // Variance
-    document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = bernouilliParameter * (1 - bernouilliParameter);
 }

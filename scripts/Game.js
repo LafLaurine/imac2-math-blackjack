@@ -2,6 +2,8 @@ const Game = (function () {
 
     let deck;
     let binomialeParameterValue;
+    let poissonParameterValue;
+    let bernouilliParameterValue;
     let gamePlayed = 0;
     /*
         32 cards button event handler
@@ -194,13 +196,13 @@ const Game = (function () {
         playerStake.oninput = function () {
             if (parseInt(this.value) <= parseInt(document.getElementById('player-money').getElementsByTagName("span")[0].textContent)) {
                 this.stake = this.value;
-                document.getElementById('info').innerHTML = '';
+                document.getElementById('scoreInfo').innerHTML = '';
                 document.getElementById('start').disabled = false;
             } else if (parseInt(this.value) === 0) {
-                document.getElementById('info').innerHTML = 'Your stake cannot be 0';
+                document.getElementById('scoreInfo').innerHTML = 'Your stake cannot be 0';
                 document.getElementById('start').disabled = true;
             } else {
-                document.getElementById('info').innerHTML = 'You don\'t have enough money';
+                document.getElementById('scoreInfo').innerHTML = 'You don\'t have enough money';
                 document.getElementById('start').disabled = true;
             }
         };
@@ -226,7 +228,7 @@ const Game = (function () {
         this.showGraphButton.addEventListener('click', this.showGraph.bind(this));
 
         let bernouilliInput = document.querySelector('#bernouilliInput');
-        let bernouilliParameterValue = document.querySelector('.bernouilliParameterValue');
+        bernouilliParameterValue = document.querySelector('.bernouilliParameterValue');
 
         bernouilliParameterValue.innerHTML = bernouilliInput.value;
         bernouilliChangeStats(bernouilliInput.value);
@@ -245,6 +247,17 @@ const Game = (function () {
         binomialeInput.addEventListener('input', function () {
             binomialeParameterValue.innerHTML = binomialeInput.value;
             binomialeChangeStats(binomialeInput.value);
+        }, false);
+
+        let poissonInput = document.querySelector('#poissonInput');
+        poissonParameterValue = document.querySelector('.poissonParameterValue');
+
+        poissonParameterValue.innerHTML = poissonInput.value;
+        poissonChangeStats(poissonInput.value);
+
+        poissonInput.addEventListener('input', function () {
+            poissonParameterValue.innerHTML = poissonInput.value;
+            poissonChangeStats(poissonInput.value);
         }, false);
 
     }
@@ -317,8 +330,16 @@ const Game = (function () {
         }
     }
 
+    function drawStatsBernouilli() {
+        // Paramètre
+        document.getElementById("param").getElementsByTagName("span")[0].innerHTML = bernouilliParameterValue.innerHTML;
+        // Esperance
+        document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = bernouilliParameterValue.innerHTML;
+        // Variance
+        document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = (bernouilliParameterValue.innerHTML * (1 - bernouilliParameterValue.innerHTML)).toFixed(2);
+    }
+
     function bernouilliChangeStats(bernouilliVariable) {
-        bernouilliParameter = bernouilliVariable;
         bernoulliApplication(bernouilliVariable);
         drawStatsBernouilli();
     }
@@ -347,6 +368,22 @@ const Game = (function () {
         // Variance
         document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = variance;
     }
+
+    function poissonChangeStats(maxGame) {
+        applyPoisson(maxGame)
+        drawStatsPoisson();
+    }
+
+    function drawStatsPoisson() {
+        // param
+        document.getElementById("param").getElementsByTagName("span")[0].innerHTML = poissonParameterValue.innerHTML;
+        // Esperance
+        document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = (poissonParameterValue.innerHTML / 3).toFixed(2);
+        // Variance
+        document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = (poissonParameterValue.innerHTML / 3).toFixed(2);
+    }
+
+
 
     function chooseMartingale() {
         if (uniforme(0, 3, 0, 1) <= 0.3 > 0 && uniforme(0, 3, 0, 1) <= 0.3) {
@@ -382,9 +419,9 @@ const Game = (function () {
         }
     }
 
-    function applyPoisson() {
-        if (poisson(gamePlayed, 10 / 3) >= 0.2) {
-            localStorage.getItem('difficulty') = "normal";
+    function applyPoisson(maxGame) {
+        if (poisson(gamePlayed, maxGame) >= 0.2) {
+            localStorage.setItem('difficulty', 'normal');
         }
     }
 
