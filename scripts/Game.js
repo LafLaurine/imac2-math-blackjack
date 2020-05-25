@@ -396,17 +396,25 @@ const Game = (function () {
     }
 
     function applyMartingale(str) {
+        let unit;
+        if (parseInt(this.playerStake.value) < 100) {
+            unit = 10;
+        } else {
+            unit = 100;
+        }
         if (str === "Alembert") {
             if (winning) {
-                if (parseInt(this.playerStake.value) - 100 > 0)
-                    this.playerStake.value = parseInt(this.playerStake.value) - 100;
+                if (parseInt(this.playerStake.value) - unit > 0)
+                    this.playerStake.value = parseInt(this.playerStake.value) - unit;
             } else
-                this.playerStake.value = parseInt(this.playerStake.value) + 100;
+                this.playerStake.value = parseInt(this.playerStake.value) + unit;
         } else if (str === "Contre Alembert") {
             if (winning)
-                this.playerStake.value = parseInt(this.playerStake.value) + 100;
+                this.playerStake.value = parseInt(this.playerStake.value) + unit;
             else {
-                this.playerStake.value = parseInt(this.playerStake.value) - 100;
+                if (parseInt(this.playerStake.value) - unit > 0) {
+                    this.playerStake.value = parseInt(this.playerStake.value) - unit;
+                }
             }
         } else if (str === "Paroli") {
             let firstStake = parseInt(this.playerStake.value);
@@ -423,6 +431,10 @@ const Game = (function () {
         if (poisson(gamePlayed, maxGame) >= 0.2) {
             localStorage.setItem('difficulty', 'normal');
         }
+    }
+
+    function computeVariance() {
+        return 1.15 * Math.sqrt(gamePlayed);
     }
 
     /*
@@ -496,7 +508,8 @@ const Game = (function () {
         }
         document.querySelector('#bernouilliInput').disabled = true;
         document.querySelector('#binomialeInput').disabled = true;
-
+        let bjVarianceText = document.getElementById('bjVariance').getElementsByTagName("span")[0];
+        bjVarianceText.innerHTML = (Math.log(0.02) / 2 * 25) * -(computeVariance() * computeVariance());
     }
 
     /*
