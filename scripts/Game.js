@@ -5,6 +5,7 @@ const Game = (function () {
     let poissonParameterValue;
     let bernouilliParameterValue;
     let gamePlayed = 0;
+    
     /*
         32 cards button event handler
     */
@@ -62,7 +63,11 @@ const Game = (function () {
         }
         //TODO
         else {
-
+            if (player.hand.length == 10) {
+                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+            } else {
+                this.playerProbability.innerHTML = 0
+            }
         }
         //if over, then player looses
         if (this.player.getScore() > 21) {
@@ -293,10 +298,10 @@ const Game = (function () {
             }
             //TODO 
             else {
-                console.log("YES")
+                console.log("YES");
             }
         } else {
-            console.log("Card doesn't exist")
+            console.log("Card doesn't exist");
         }
     }
 
@@ -389,8 +394,6 @@ const Game = (function () {
         document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = (poissonParameterValue.innerHTML / 3).toFixed(2);
     }
 
-
-
     function chooseMartingale() {
         if (uniforme(0, 3, 0, 1) <= 0.3 > 0 && uniforme(0, 3, 0, 1) <= 0.3) {
             applyMartingale("Alembert");
@@ -461,16 +464,19 @@ const Game = (function () {
         gamePlayed += 1;
         this.numberCardDealer = this.dealer.hand.length;
         let hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
+        let hand21InequalProbability;
         if (this.numberCard === 52) {
-
             //Si AS coeur pas tiré
-            let hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (90 / this.numberCard * 16 * 15.3 / (this.numberCard - 1));
+            hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (90 / this.numberCard * 16 * 15.3 / (this.numberCard - 1));
             //Si As coeur tiré
             hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (100 / this.numberCard * 16 * 5.3 / (this.numberCard - 1));
+        } else {
+            //Si AS coeur pas tiré
+            hand21InequalProbability = (18.7 / this.numberCard * 46.4) + (90 / this.numberCard * 16 * 18.7 / (this.numberCard - 1));
+            //Si As coeur tiré
+            hand21InequalProbability = (18.7 / this.numberCard * 51.6) + (90 / this.numberCard * 16 * 18.7 / (this.numberCard - 1));
         }
 
-        //TODO
-        ///const hand21Inequal;
         if (inequal === false) {
             this.playerProbability.innerHTML = hand21Probability;
             this.expectedValue.innerHTML = ((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value)).toFixed(2)
@@ -495,7 +501,6 @@ const Game = (function () {
         //renders the current scores
         this.dealerScore.innerHTML = this.dealer.getScore();
         this.playerScore.innerHTML = this.player.getScore();
-
         this.cardProbability = document.getElementById('obtainingCard');
 
         cardProbability.oninput = function () {
