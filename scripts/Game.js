@@ -149,6 +149,12 @@ const Game = (function () {
     }
 
     this.showGraph = function () {
+        let factor;
+        if (this.numberCard === 52) {
+            factor = 169;
+        } else {
+            factor = 256;
+        }
         if (this.showGraphButton.className === "green") {
 
             let canva = document.createElement('CANVAS');
@@ -162,7 +168,7 @@ const Game = (function () {
                 data: {
                     labels: ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'],
                     datasets: [{
-                        label: 'Card distribution',
+                        label: 'Card distribution data ' + '* ' + factor,
                         backgroundColor: 'rgb(99, 203, 255)',
                         borderColor: 'rgb(99, 203, 255)',
                         data: [1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 15, 14, 13, 12, 11, 10, 18, 8, 1]
@@ -509,7 +515,7 @@ const Game = (function () {
         document.querySelector('#bernouilliInput').disabled = true;
         document.querySelector('#binomialeInput').disabled = true;
         let bjVarianceText = document.getElementById('bjVariance').getElementsByTagName("span")[0];
-        bjVarianceText.innerHTML = (Math.log(0.02) / 2 * 25) * -(computeVariance() * computeVariance());
+        bjVarianceText.innerHTML = Math.floor((Math.log(0.02) / 2 * 25) * -(computeVariance() * computeVariance()));
     }
 
     /*
