@@ -70,10 +70,6 @@ function combination(n, k) {
     return t[k]; //return value
 }
 
-function hypergeometric(k, n, g, t) {
-    return combination(g, k) * combination((t - g), (n - k)) / combination(t, n);
-}
-
 function poisson(k, lambda) {
     let A = Math.pow(lambda, k);
     let L = Math.exp(-lambda);

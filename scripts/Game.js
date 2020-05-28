@@ -327,13 +327,10 @@ const Game = (function () {
         let nx = countCard(x)
         if (x === 'A' || x === '2' || x === '3' || x === '4' || x === '5' || x === '6' || x === '7' || x === '8' || x === '9' || x === '10' || x === 'J' || x === 'Q' || x === 'K') {
             if (x !== 10) {
-                if (this.inequal === false)
                     return ((4 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
-            //TODO 
             else {
-                if (this.inequal === false)
-                    return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
+                return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
         } else {
             console.log("Card doesn't exist");
@@ -553,11 +550,7 @@ const Game = (function () {
         this.cardProbability = document.getElementById('obtainingCard');
 
         cardProbability.oninput = function () {
-            if (inequal === false) {
-                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
-            } else {
-                //TODO
-            }
+            document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
         }
         this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
         this.setMessage("Hit or Stand");
