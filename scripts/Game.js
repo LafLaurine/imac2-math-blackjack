@@ -494,35 +494,45 @@ const Game = (function () {
         gamePlayed += 1;
         this.numberCardDealer = this.dealer.hand.length;
         let hand21Probability = ((combination(4, 1) * combination(16, 1)) / combination(this.numberCard, 2)).toFixed(2);
-        let hand21InequalProbability;
-        if (this.numberCard === 52) {
-            //Si AS coeur pas tiré
-            hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (90 / this.numberCard * 16 * 15.3 / (this.numberCard - 1));
-            //Si As coeur tiré
-            hand21InequalProbability = (15.3 / this.numberCard * 28.2) + (100 / this.numberCard * 16 * 5.3 / (this.numberCard - 1));
-        } else {
-            //Si AS coeur pas tiré
-            hand21InequalProbability = (18.7 / this.numberCard * 46.4) + (90 / this.numberCard * 16 * 18.7 / (this.numberCard - 1));
-            //Si As coeur tiré
-            hand21InequalProbability = (18.7 / this.numberCard * 51.6) + (90 / this.numberCard * 16 * 18.7 / (this.numberCard - 1));
+        // We have 4 cases
+        //AS♥ + head
+        let case1 = 16*(0.1 * 1/(this.numberCard - 1));
+        //As + head
+        let case2 = (90/(this.numberCard - 1)) * (1/100) * 3 * 16 * (90/(this.numberCard - 2) * 1/100);
+        // head + As♥
+        let case3 = ((90/(this.numberCard - 1) * 1/100) * 0.1) * 16;
+        // head + AS
+        let case4 = 16 * (90/(this.numberCard - 1) * 0.01) * (3 * (90/(this.numberCard -2) * 0.01));  
+        let hand21InequalProbability = (case1 + case2 + case3 + case4).toFixed(2);
+        if (this.inequal === false) {
+            this.playerProbability.innerHTML = hand21Probability;
+            this.expectedValue.innerHTML = (((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value))).toFixed(2)
+        }
+        else if (this.inequal === true) {
+            this.playerProbability.innerHTML = hand21InequalProbability;
+            this.expectedValue.innerHTML = (((1 - hand21InequalProbability) * this.playerStake.value) - (hand21InequalProbability * (3 * this.playerStake.value))).toFixed(2)
         }
 
-        if (inequal === false) {
-            this.playerProbability.innerHTML = hand21Probability;
-            this.expectedValue.innerHTML = ((1 - hand21Probability) * this.playerStake.value) - (hand21Probability * (3 * this.playerStake.value)).toFixed(2)
-        }
-        //TODO 
-        else if (inequal === true) {
-            this.playerProbability.innerHTML = hand21InequalProbability;
-            this.expectedValue.innerHTML = ((1 - hand21InequalProbability) * this.playerStake.value) - (hand21InequalProbability * (3 * this.playerStake.value)).toFixed(2)
-        }
+        let goodHandProba;
+        let hand20Probability;
+        let hand19Probability;
+        let hand18Probability;
 
         //good hand probability compute
-        const hand20Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 2)) / combination(this.numberCard, 2)).toFixed(2);
-        const hand19Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1)) / combination(this.numberCard, 2)).toFixed(2);
-        const hand18Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1) + combination(4, 2)) / combination(this.numberCard, 2)).toFixed(2);
-        const goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
-        this.goodHandProbability.innerHTML = goodHandProba.toFixed(2);
+        if(this.inequal === false) {
+            hand20Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 2)) / combination(this.numberCard, 2)).toFixed(2);
+            hand19Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1)) / combination(this.numberCard, 2)).toFixed(2);
+            hand18Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1) + combination(4, 2)) / combination(this.numberCard, 2)).toFixed(2);
+            goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
+        } else if (this.inequal === true){
+            console.log("haha")
+            hand20Probability = (0.1 * (1/(this.numberCard - 1)) * 4) + ((90 / (this.numberCard - 1) * 0.01) * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.01 * (90/(this.numberCard - 1)) * 4 * 0.1) + (((90/(this.numberCard - 1)) * 0.01 * 4) * (3 * (90/(this.numberCard -2) * 0.01)));
+            hand19Probability = ((16 * (90/(this.numberCard - 1) * 0.01)) * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard-1) * 0.01) * 4 * 0.1) + ((90/(this.numberCard - 1) * 0.01) * 3 * 4 * ((90/this.numberCard - 2) * 0.01)) * 2;
+            hand18Probability = (((90/(this.numberCard - 1)) * 0.01) * 16 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard - 1) * 0.01) * 4 * 0.1) + (90/(this.numberCard - 1) * 0.01 * 3 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + ((90/(this.numberCard - 1) * 0.01) * 4 * (90/(this.numberCard - 2) * 0.01) * 4) * 2;
+            goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
+        }
+
+        this.goodHandProbability.innerHTML = goodHandProba;
 
         //render the cards
         document.getElementById(this.dealer.element).innerHTML = this.dealer.showHand();
