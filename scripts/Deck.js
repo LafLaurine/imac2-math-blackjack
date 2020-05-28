@@ -51,9 +51,9 @@ class Deck {
 				this.deck.push(new Card(ranks[r], suits[s]));
 			}
 		}
-		//A♡ has 10% chance to be draw, other card have 1.77%
+		//A♡ has 10% chance to be draw, other card have 1.76%
 		for (let s = 0; s < deck.length; s++) {
-			prob.push(1.77);
+			prob.push(1.76);
 		}
 	}
 

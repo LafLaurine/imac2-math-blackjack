@@ -14,6 +14,7 @@ function bernoulli(p) {
     return false;
 }
 
+
 //p = success proba
 //n = nb experience
 // k = success

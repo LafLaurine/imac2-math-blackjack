@@ -5,7 +5,7 @@ const Game = (function () {
     let poissonParameterValue;
     let bernouilliParameterValue;
     let gamePlayed = 0;
-    
+
     /*
         32 cards button event handler
     */
