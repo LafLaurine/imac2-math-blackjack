@@ -49,22 +49,31 @@ const Game = (function () {
         //render the card and score
         document.getElementById(this.player.element).innerHTML += card.view();
         this.playerScore.innerHTML = this.player.getScore();
-        this.bustProbability.innerHTML = (this.computeBust()).toFixed(2)
+        this.bustProbability.innerHTML = (this.computeBust()).toFixed(2);
         if (this.inequal === false) {
             document.getElementById('obtainingCard').oninput = function () {
-                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2))
+                document.getElementById('chosen-card').innerHTML = (obtainingCard(this.value).toFixed(2));
             }
-            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2);
             if (player.hand.length == 10) {
-                this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2)
-                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
+                this.playerProbability.innerHTML = ((combination(4, 1)) / combination((this.numberCard) - this.numberCardHand, this.numberCardHand)).toFixed(2);
+                this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2);
             } else {
                 this.playerProbability.innerHTML = 0
             }
         }
-        //TODO
         else {
+            this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2);
             if (player.hand.length == 10) {
+                //AS♥ + head
+                let case1 = 16*(0.1 * 1/(this.numberCard - this.numberCardHand));
+                //As + head
+                let case2 = (90/(this.numberCard - this.numberCardHand)) * (1/100) * 3 * 16 * (90/(this.numberCard - this.numberCardHand) * 1/100);
+                // head + As♥
+                let case3 = ((90/(this.numberCard - this.numberCardHand) * 1/100) * 0.1) * 16;
+                // head + AS
+                let case4 = 16 * (90/(this.numberCard - this.numberCardHand) * 0.01) * (3 * (90/(this.numberCard - this.numberCardHand) * 0.01));  
+                this.playerProbability.innerHTML = (case1 + case2 + case3 + case4).toFixed(2);
                 this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
             } else {
                 this.playerProbability.innerHTML = 0
@@ -323,7 +332,8 @@ const Game = (function () {
             }
             //TODO 
             else {
-                console.log("YES");
+                if (this.inequal === false)
+                    return ((16 - nx) / (this.numberCard - (this.numberCardHand + this.numberCardDealer)))
             }
         } else {
             console.log("Card doesn't exist");
@@ -525,7 +535,6 @@ const Game = (function () {
             hand18Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1) + combination(4, 2)) / combination(this.numberCard, 2)).toFixed(2);
             goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
         } else if (this.inequal === true){
-            console.log("haha")
             hand20Probability = (0.1 * (1/(this.numberCard - 1)) * 4) + ((90 / (this.numberCard - 1) * 0.01) * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.01 * (90/(this.numberCard - 1)) * 4 * 0.1) + (((90/(this.numberCard - 1)) * 0.01 * 4) * (3 * (90/(this.numberCard -2) * 0.01)));
             hand19Probability = ((16 * (90/(this.numberCard - 1) * 0.01)) * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard-1) * 0.01) * 4 * 0.1) + ((90/(this.numberCard - 1) * 0.01) * 3 * 4 * ((90/this.numberCard - 2) * 0.01)) * 2;
             hand18Probability = (((90/(this.numberCard - 1)) * 0.01) * 16 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard - 1) * 0.01) * 4 * 0.1) + (90/(this.numberCard - 1) * 0.01 * 3 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + ((90/(this.numberCard - 1) * 0.01) * 4 * (90/(this.numberCard - 2) * 0.01) * 4) * 2;
