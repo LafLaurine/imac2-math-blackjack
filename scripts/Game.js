@@ -4,6 +4,7 @@ const Game = (function () {
     let binomialeParameterValue;
     let poissonParameterValue;
     let bernouilliParameterValue;
+    let normaleParameterValue;
     let gamePlayed = 0;
 
     /*
@@ -77,6 +78,19 @@ const Game = (function () {
         }
     }
 
+    function applyNormale() {
+        return normalDistribution();
+    }
+
+    function drawStatsNormale() {
+        // Paramètre
+        document.getElementById("param").getElementsByTagName("span")[0].innerHTML = normaleParameterValue.innerHTML;
+        // Esperance
+        document.getElementById("esperance").getElementsByTagName("span")[0].innerHTML = 0;
+        // Variance 
+        document.getElementById("variance").getElementsByTagName("span")[0].innerHTML = 1;
+    }
+
     /*
         Stand button event handler
     */
@@ -87,22 +101,22 @@ const Game = (function () {
         //deals a card to the dealer until
         //one of the conditions below is true
         let card = new Card();
-        let t = normalDistribution();
+        let t = applyNormale();
         let limit;
         if (localStorage.getItem('difficulty') === 'easy') {
-            if (t > 0.2) {
+            if (t > normaleParameterValue.innerHTML) {
                 limit = 20;
             } else {
                 limit = Math.floor(Math.random() * 20) + 16;
             }
         } else if (localStorage.getItem('difficulty') === 'normal') {
-            if (t > 0.2) {
+            if (t > normaleParameterValue.innerHTML) {
                 limit = 17;
             } else {
                 limit = Math.floor(Math.random() * 17) + 14;
             }
         } else if (localStorage.getItem('difficulty') === 'hard') {
-            if (t > 0.2) {
+            if (t > normaleParameterValue.innerHTML) {
                 limit = 16;
             } else {
                 limit = Math.floor(Math.random() * 17) + 16;
@@ -269,6 +283,17 @@ const Game = (function () {
         poissonInput.addEventListener('input', function () {
             poissonParameterValue.innerHTML = poissonInput.value;
             poissonChangeStats(poissonInput.value);
+        }, false);
+
+        let normaleInput = document.querySelector('#normaleInput');
+        normaleParameterValue = document.querySelector('.normaleParameterValue');
+
+        normaleParameterValue.innerHTML = normaleInput.value;
+        normaleChangeStats(normaleInput.value);
+
+        normaleInput.addEventListener('input', function () {
+            normaleParameterValue.innerHTML = normaleInput.value;
+            normaleChangeStats(normaleInput.value);
         }, false);
 
     }
@@ -444,6 +469,11 @@ const Game = (function () {
 
     function computeVariance() {
         return 1.15 * Math.sqrt(gamePlayed);
+    }
+
+    function normaleChangeStats() {
+        applyNormale()
+        drawStatsNormale();
     }
 
     /*
