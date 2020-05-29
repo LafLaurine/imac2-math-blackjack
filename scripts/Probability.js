@@ -1,7 +1,8 @@
 const eventTab = {
     "Due to the stock market spit, you only start with 50 coins...": 50,
     "Wow! You're lucky : a millionaire left you 1,000 coins.": 1000,
-    "You seem nice, you can start with 500 coins.": 500
+    "You seem nice, you can start with 500 coins.": 500,
+    "Welcome to the jungle with 10000 coins.": 10000
 }
 
 function bernoulli(p) {

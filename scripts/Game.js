@@ -62,18 +62,14 @@ const Game = (function () {
                 this.playerProbability.innerHTML = 0
             }
         }
-        else {
+        else if (this.inequal === true){
             this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2);
             if (player.hand.length == 10) {
-                //AS♥ + head
-                let case1 = 16*(0.1 * 1/(this.numberCard - this.numberCardHand));
-                //As + head
-                let case2 = (90/(this.numberCard - this.numberCardHand)) * (1/100) * 3 * 16 * (90/(this.numberCard - this.numberCardHand) * 1/100);
-                // head + As♥
-                let case3 = ((90/(this.numberCard - this.numberCardHand) * 1/100) * 0.1) * 16;
-                // head + AS
-                let case4 = 16 * (90/(this.numberCard - this.numberCardHand) * 0.01) * (3 * (90/(this.numberCard - this.numberCardHand) * 0.01));  
-                this.playerProbability.innerHTML = (case1 + case2 + case3 + case4).toFixed(2);
+                if(Object.values(deck).rank === "A" && Object.values(deck).suit === "♡") {
+                    this.playerProbability.innerHTML =  (3*(0.1 * 1/(this.numberCard - 1 - this.numberCardHand))).toFixed(2);
+                } else {
+                    this.playerProbability.innerHTML = (3*(0.01 * 90/(this.numberCard - 1 - this.numberCardHand))).toFixed(2);
+                }
                 this.expectedValue.innerHTML = ((1 - this.playerProbability.innerHTML) * this.playerStake.value) - (this.playerProbability.innerHTML * (3 * this.playerStake.value)).toFixed(2)
             } else {
                 this.playerProbability.innerHTML = 0
@@ -427,7 +423,7 @@ const Game = (function () {
     }
 
     function chooseMartingale() {
-        if (uniforme(0, 3, 0, 1) <= 0.3 > 0 && uniforme(0, 3, 0, 1) <= 0.3) {
+        if (uniforme(0, 3, 0, 1) > 0 && uniforme(0, 3, 0, 1) <= 0.3) {
             applyMartingale("Alembert");
         } else if (uniforme(0, 2, 0, 1) > 0.3 && uniforme(0, 2, 0, 1) <= 0.5) {
             applyMartingale("Contre Alembert");
@@ -471,6 +467,9 @@ const Game = (function () {
     function applyPoisson(maxGame) {
         if (poisson(gamePlayed, maxGame) >= 0.2) {
             localStorage.setItem('difficulty', 'normal');
+        }
+        else if (poisson(gamePlayed, maxGame) >= 0.4) {
+            localStorage.setItem('difficulty', 'hard');
         }
     }
 
