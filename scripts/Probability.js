@@ -2,6 +2,7 @@ const eventTab = {
     "Due to the stock market spit, you only start with 50 coins...": 50,
     "Wow! You're lucky : a millionaire left you 1,000 coins.": 1000,
     "You seem nice, you can start with 500 coins.": 500,
+    "Youwon the lottery, stat with 150000 coins !": 20000,
     "Welcome to the jungle with 10000 coins.": 10000
 }
 
@@ -33,7 +34,7 @@ function normalDistribution() {
     while (v === 0) v = Math.random();
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
-    if (num > 1 || num < 0) return randn_bm(); // resample between 0 and 1
+    if (num > 1 || num < 0) return normalDistribution(); // resample between 0 and 1
     return num;
 }
 

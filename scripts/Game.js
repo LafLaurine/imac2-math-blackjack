@@ -393,7 +393,7 @@ const Game = (function () {
     }
 
     function binomialeChangeStats(binomialeVariable) {
-        binomialeApplication(binomialeVariable)
+        binomialeApplication(binomialeVariable);
         drawStatsBinomiale();
     }
 
@@ -529,12 +529,12 @@ const Game = (function () {
             hand20Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 2)) / combination(this.numberCard, 2)).toFixed(2);
             hand19Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1)) / combination(this.numberCard, 2)).toFixed(2);
             hand18Probability = ((combination(4, 1) * combination(4, 1) + combination(16, 1) * combination(4, 1) + combination(4, 2)) / combination(this.numberCard, 2)).toFixed(2);
-            goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
+            goodHandProba = ((hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100)).toFixed(2);
         } else if (this.inequal === true){
             hand20Probability = (0.1 * (1/(this.numberCard - 1)) * 4) + ((90 / (this.numberCard - 1) * 0.01) * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.01 * (90/(this.numberCard - 1)) * 4 * 0.1) + (((90/(this.numberCard - 1)) * 0.01 * 4) * (3 * (90/(this.numberCard -2) * 0.01)));
             hand19Probability = ((16 * (90/(this.numberCard - 1) * 0.01)) * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard-1) * 0.01) * 4 * 0.1) + ((90/(this.numberCard - 1) * 0.01) * 3 * 4 * ((90/this.numberCard - 2) * 0.01)) * 2;
             hand18Probability = (((90/(this.numberCard - 1)) * 0.01) * 16 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + (0.1 * (1 / (this.numberCard - 1) * 4)) + ((90/(this.numberCard - 1) * 0.01) * 4 * 0.1) + (90/(this.numberCard - 1) * 0.01 * 3 * 4 * (90/(this.numberCard - 2) * 0.01)) * 2 + ((90/(this.numberCard - 1) * 0.01) * 4 * (90/(this.numberCard - 2) * 0.01) * 4) * 2;
-            goodHandProba = (hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100);
+            goodHandProba = ((hand21Probability * 100) + (hand20Probability * 100) + (hand19Probability * 100) + (hand18Probability * 100)).toFixed(2);
         }
 
         this.goodHandProbability.innerHTML = goodHandProba;
