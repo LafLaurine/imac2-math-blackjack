@@ -2,16 +2,15 @@
 
 ![Logo Imac](https://github.com/dsmtE/rogueLike/blob/master/doc/img/logo/imac.png?raw=true)
 
-*This school project was done for our math course at IMAC.*
-[Link to the project](https://laflaurine.github.io/imac2-math-blackjack/)
+*This school [project](https://laflaurine.github.io/imac2-math-blackjack/) was done for our math course at IMAC.*
 
 Blackjack is a game governed by the hypergeometric law, since a sample of n elements is extracted at random. We have an exhaustive draw of n elements (i.e. n draws without discount).
 You can either start the game with a 52 cards deck or a 32 one.
 
 This blackjack follow the model of Las Vegas blackjack.
 
-You can see much more explanation on how we compute probabilites and how we managed to integrete random variables.
-[Link to the project documentation (it's in french)](https://github.com/LafLaurine/imac2-math-blackjack/blob/master/doc/PROJET_MATH_LAFONTAINE_SEGUY.pdf)
+You can see much more explanation [here (it's in french)](https://github.com/LafLaurine/imac2-math-blackjack/blob/master/doc/PROJET_MATH_LAFONTAINE_SEGUY.pdf)
+ on how we compute probabilites and how we managed to integrete random variables.
 
 ### Resources
 
